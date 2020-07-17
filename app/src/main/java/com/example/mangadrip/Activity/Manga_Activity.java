@@ -43,7 +43,7 @@ public class Manga_Activity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String title = intent.getExtras().getString("Title");
-        Manga_URL = intent.getExtras().getString("Description");
+        Manga_URL = intent.getExtras().getString("URL");
         String cover = intent.getExtras().getString("Thumbnail");
 
         getMangaData();
@@ -56,6 +56,7 @@ public class Manga_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Manga_Activity.this,Chapter_Activity.class);
+                intent.putExtra("URL",Manga_URL);
                 startActivity(intent);
         }
         });

@@ -51,7 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             public void onClick (View v){
                 Intent intent = new Intent(context, Manga_Activity.class);
                 intent.putExtra("Title",Data.get(position).getTitle());
-                intent.putExtra("Description",Data.get(position).getDescription());
+                intent.putExtra("URL",Data.get(position).getDescription());
                 intent.putExtra("Thumbnail",Data.get(position).getThumbnail());
                 context.startActivity(intent);
             }

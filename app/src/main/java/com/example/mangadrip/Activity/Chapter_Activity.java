@@ -35,8 +35,8 @@ public class Chapter_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_chapter);
 
         Intent intent = getIntent();
-        Manga_URL = intent.getExtras().getString("Description");
-        Log.d("yuh",Manga_URL);
+//        Manga_URL = intent.getExtras().getString("Description");
+//        Log.d("yuh",Manga_URL);
 
         chapter_title = (TextView) findViewById(R.id.chapter_title);
         lstChapter = new ArrayList<>();
@@ -54,7 +54,7 @@ public class Chapter_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Document doc = Jsoup.connect("https://www.mangahere.cc/manga/tales_of_demons_and_gods/").get();
+                    Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).get();
                     Elements description = doc.select("p.title3");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {

@@ -34,7 +34,8 @@ public class Chapter_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter);
 
-        Intent intent = getIntent();
+//        Intent intent = getIntent();
+
 //        Manga_URL = intent.getExtras().getString("Description");
 //        Log.d("yuh",Manga_URL);
 
@@ -75,3 +76,20 @@ public class Chapter_Activity extends AppCompatActivity {
 
 
 }
+
+// Code for fetching Chapter info for MangaHere
+// try {
+//         Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).get();
+//         Elements description = doc.select("p.title3");
+//         int length = description.size();
+//         for (int i = 0; i < length; i++) {
+//        String Link = doc.select("ul.detail-main-list").select("li").eq(i).select("a").attr("abs:href").toString();
+//        String Chapter_Title = doc.select("p.title3").eq(i).text();
+//        String Date = doc.select("p.title2").eq(i).text();
+//        Chapter chap = (new Chapter(Chapter_Title,Link));
+//        lstChapter.add(chap);
+//        }
+//        } catch (IOException ignored) {
+//        Log.d("Yuh","Something is not working");
+//        }
+//        runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});

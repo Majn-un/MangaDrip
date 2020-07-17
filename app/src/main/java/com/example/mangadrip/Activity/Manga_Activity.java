@@ -68,16 +68,22 @@ public class Manga_Activity extends AppCompatActivity {
             public void run() {
                 try {
                     Document doc = Jsoup.connect(Manga_URL).get();
-                    String author = doc.select("p.detail-info-right-say").text();
-                    String status =  doc.select("span.detail-info-right-title-tip").text();
-                    String description = doc.select("p.detail-info-right-content").text();
+                    final String author = doc.select("p.detail-info-right-say").text();
+                    final String status =  doc.select("span.detail-info-right-title-tip").text();
+                    final String description = doc.select("p.detail-info-right-content").text();
                     Elements tag_detail = doc.select("p.detail-info-right-tag-list");
                     int length = tag_detail.size();
                     String tags = "";
                     for (int i = 0; i < length; i++) {
                         tags += tag_detail.eq(i).text() + " ";
                     }
-                    startAssemble(description,author,status);
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            manga_description.setText(description);
+                            manga_author.setText(author);
+                            manga_status.setText(status);
+                        }
+                    });
 
                 } catch (IOException ignored) {
                     Log.d("Yuh","Something is not working");
@@ -86,19 +92,25 @@ public class Manga_Activity extends AppCompatActivity {
             }
         }).start();
     }
-    private void startAssemble(final String description, final String author, final String status) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        manga_description.setText(description);
-                        manga_author.setText(author);
-                        manga_status.setText(status);
-                    }
-                });
-            }
-        }).start();
-    }
 
 }
+
+// Code for Fetching Manga Detail for MangaHere
+//try {
+//        Document doc = Jsoup.connect(Manga_URL).get();
+//final String author = doc.select("p.detail-info-right-say").text();
+//final String status =  doc.select("span.detail-info-right-title-tip").text();
+//final String description = doc.select("p.detail-info-right-content").text();
+//        Elements tag_detail = doc.select("p.detail-info-right-tag-list");
+//        int length = tag_detail.size();
+//        String tags = "";
+//        for (int i = 0; i < length; i++) {
+//        tags += tag_detail.eq(i).text() + " ";
+//        }
+//        runOnUiThread(new Runnable() {
+//public void run() {
+//        manga_description.setText(description);
+//        manga_author.setText(author);
+//        manga_status.setText(status);
+//        }
+//        });

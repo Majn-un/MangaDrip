@@ -45,15 +45,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Document doc = Jsoup.connect("https://www.mangahere.cc/ranking/").get();
-                    Elements description = doc.select("p.manga-list-1-item-title");
+                    Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    Elements description = doc.select("div.list-truyen-item-wrap");
                     int length = description.size();
-                    String cont = description.eq(1).text();
                     for (int i = 0; i < length; i++) {
-//                        Log.d("imgUrl", imgUrl);
-                        String title = doc.select("img.manga-list-1-cover").eq(i).attr("alt");
-                        String imgUrl = doc.select("img.manga-list-1-cover").eq(i).attr("src");
-                        String MangaLink = doc.select("p.manga-list-1-item-title > a").eq(i).attr("abs:href");;
+                        String title = description.eq(i).select("a").attr("title");
+                        String imgUrl = description.eq(i).select("a").select("img").attr("src");
+                        String MangaLink = description.eq(i).select("a").eq(1).attr("href");
 //                        Log.d("Yuh",des);
                         Manga test = (new Manga(title,MangaLink,imgUrl));
                         lstManga.add(test);
@@ -67,24 +65,4 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-
 }
-// Code for Fetching Manga for MangaHere
-// try {
-//         Document doc = Jsoup.connect("https://www.mangahere.cc/ranking/").get();
-//         Elements description = doc.select("p.manga-list-1-item-title");
-//         int length = description.size();
-//         String cont = description.eq(1).text();
-//         for (int i = 0; i < length; i++) {
-////                        Log.d("imgUrl", imgUrl);
-//        String title = doc.select("img.manga-list-1-cover").eq(i).attr("alt");
-//        String imgUrl = doc.select("img.manga-list-1-cover").eq(i).attr("src");
-//        String MangaLink = doc.select("p.manga-list-1-item-title > a").eq(i).attr("abs:href");;
-////                        Log.d("Yuh",des);
-//        Manga test = (new Manga(title,MangaLink,imgUrl));
-//        lstManga.add(test);
-//        }
-//        } catch (IOException ignored) {
-//        Log.d("Yuh","Something is not working");
-//        }
-//        runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});

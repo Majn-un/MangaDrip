@@ -55,13 +55,13 @@ public class Chapter_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).get();
-                    Elements description = doc.select("p.title3");
+                    Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();;
+                    Elements description = doc.select("div.panel-story-chapter-list").select("li");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {
-                        String Link = doc.select("ul.detail-main-list").select("li").eq(i).select("a").attr("abs:href").toString();
-                        String Chapter_Title = doc.select("p.title3").eq(i).text();
-                        String Date = doc.select("p.title2").eq(i).text();
+                        String Link = description.eq(i).select("li").select("a").attr("abs:href");
+                        String Chapter_Title = description.eq(i).select("li").select("a").text();
+                        String Date = description.eq(1).select("li").select("span").eq(1).text();
                         Chapter chap = (new Chapter(Chapter_Title,Link));
                         lstChapter.add(chap);
                     }

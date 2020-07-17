@@ -43,8 +43,7 @@ public class Page_Activity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String Title = intent.getExtras().getString("Name");
-        String Chapter_URL = intent.getExtras().getString("Link");
-//        Log.d("Link Test",Chapter_URL);
+        Chapter_URL = intent.getExtras().getString("Link");
         chapter_title.setText(Title);
         lstPages = new ArrayList<>();
         getMangaPages();
@@ -61,10 +60,9 @@ public class Page_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-
-                    Document doc = Jsoup.connect("https://ww3.mangafox.online/domestic-na-kanojo/chapter-267-709322625417050").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
-                    Elements description = doc.select("div.list_img").select("img");
-                    String URL = description.toString();
+                    Log.d("Chapter Link",Chapter_URL);
+                    Document doc = Jsoup.connect(Chapter_URL).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {
                         String Link = description.eq(i).attr("src");

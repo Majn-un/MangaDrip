@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         lstManga = new ArrayList<>();
         getWebsite();
 
-
         RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
         myAdapter = new RecyclerViewAdapter(this, lstManga);
         myrv.setLayoutManager(new GridLayoutManager(this, 3));

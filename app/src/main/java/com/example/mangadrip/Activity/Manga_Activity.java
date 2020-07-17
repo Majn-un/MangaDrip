@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,8 +43,7 @@ public class Manga_Activity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String title = intent.getExtras().getString("Title");
-        Log.d("title",title);
-        Manga_URL = intent.getExtras().getString("Description");
+        Manga_URL = intent.getExtras().getString("URL");
         String cover = intent.getExtras().getString("Thumbnail");
 
         getMangaData();
@@ -52,13 +52,14 @@ public class Manga_Activity extends AppCompatActivity {
         Picasso.get().load(cover).into(img);
 
         button_for_chapters = (Button) findViewById(R.id.chapters_button);
-//        button_for_chapters.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(Manga_Activity.this,Chapter_Activity.class);
-//                startActivity(intent);
-//        }
-//        });
+        button_for_chapters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Manga_Activity.this,Chapter_Activity.class);
+                intent.putExtra("URL",Manga_URL);
+                startActivity(intent);
+        }
+        });
     }
 
     private void getMangaData() {
@@ -76,7 +77,6 @@ public class Manga_Activity extends AppCompatActivity {
                     for (int i = 0; i < length; i++) {
                         tags += tag_detail.eq(i).text() + " ";
                     }
-                    Log.d("test",description);
                     startAssemble(description,author,status);
 
                 } catch (IOException ignored) {

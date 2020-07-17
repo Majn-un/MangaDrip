@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
+        <activity android:name=".Activity.Chapter_Activity" />
         <activity android:name=".Activity.Manga_Activity" />
         <activity android:name=".Activity.MainActivity">
             <intent-filter>

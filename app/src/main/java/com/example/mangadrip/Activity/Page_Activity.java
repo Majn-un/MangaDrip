@@ -1,8 +1,6 @@
 package com.example.mangadrip.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -11,8 +9,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.mangadrip.Adapter.PageViewAdapter;
-import com.example.mangadrip.Adapter.RecyclerViewAdapter;
-import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.Classes.Page;
 import com.example.mangadrip.R;
 
@@ -23,14 +19,15 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Page_Activity extends AppCompatActivity {
 
     List<Page> lstPages;
     private TextView chapter_title;
     private String Chapter_URL;
+    Timer timer;
     private PageViewAdapter myViewPager;
 
     @Override
@@ -60,14 +57,17 @@ public class Page_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    timer = new Timer();
                     Log.d("Chapter Link",Chapter_URL);
                     Document doc = Jsoup.connect(Chapter_URL).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                     Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {
-                        String Link = description.eq(i).attr("src");
+                        String Link = description.eq(0).attr("src");
                         String Page_Number = String.valueOf(i+1);
                         lstPages.add(new Page(Link,Page_Number));
+                        Log.d("Testing",Link);
+
                     }
 
                 } catch (IOException ignored) {
@@ -77,5 +77,7 @@ public class Page_Activity extends AppCompatActivity {
             }
         }).start();
     }
+
+
 
 }

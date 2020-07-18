@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mangadrip">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -11,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".Activity.Page_Activity"></activity>
         <activity android:name=".Activity.Chapter_Activity" />
         <activity android:name=".Activity.Manga_Activity" />
         <activity android:name=".Activity.MainActivity">

@@ -67,17 +67,23 @@ public class Manga_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Document doc = Jsoup.connect(Manga_URL).get();
-                    String author = doc.select("p.detail-info-right-say").text();
-                    String status =  doc.select("span.detail-info-right-title-tip").text();
-                    String description = doc.select("p.detail-info-right-content").text();
-                    Elements tag_detail = doc.select("p.detail-info-right-tag-list");
+                    Document doc = Jsoup.connect(Manga_URL).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    final String author = doc.select("td.table-value").eq(1).text();
+                    final String status =  doc.select("td.table-value").eq(2).text();
+                    final String description = doc.select("div.panel-story-info-description").text();
+                    Elements tag_detail = doc.select("td.table-value").eq(3);
                     int length = tag_detail.size();
                     String tags = "";
                     for (int i = 0; i < length; i++) {
                         tags += tag_detail.eq(i).text() + " ";
                     }
-                    startAssemble(description,author,status);
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            manga_description.setText(description);
+                            manga_author.setText(author);
+                            manga_status.setText("Status: "+status);
+                        }
+                    });
 
                 } catch (IOException ignored) {
                     Log.d("Yuh","Something is not working");
@@ -86,19 +92,25 @@ public class Manga_Activity extends AppCompatActivity {
             }
         }).start();
     }
-    private void startAssemble(final String description, final String author, final String status) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        manga_description.setText(description);
-                        manga_author.setText(author);
-                        manga_status.setText(status);
-                    }
-                });
-            }
-        }).start();
-    }
 
 }
+
+// Code for Fetching Manga Detail for MangaHere
+//try {
+//        Document doc = Jsoup.connect(Manga_URL).get();
+//final String author = doc.select("p.detail-info-right-say").text();
+//final String status =  doc.select("span.detail-info-right-title-tip").text();
+//final String description = doc.select("p.detail-info-right-content").text();
+//        Elements tag_detail = doc.select("p.detail-info-right-tag-list");
+//        int length = tag_detail.size();
+//        String tags = "";
+//        for (int i = 0; i < length; i++) {
+//        tags += tag_detail.eq(i).text() + " ";
+//        }
+//        runOnUiThread(new Runnable() {
+//public void run() {
+//        manga_description.setText(description);
+//        manga_author.setText(author);
+//        manga_status.setText(status);
+//        }
+//        });

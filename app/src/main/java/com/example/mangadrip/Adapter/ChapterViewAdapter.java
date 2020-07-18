@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.example.mangadrip.Activity.Chapter_Activity;
+import com.example.mangadrip.Activity.Page_Activity;
 import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.R;
 
@@ -42,15 +42,15 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.chapter_title.setText(Data.get(position).getName());
-//        holder.cardView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick (View v){
-//                Intent intent = new Intent(context, Chapter_Activity.class);
-//                intent.putExtra("Name",Data.get(position).getName());
-//                intent.putExtra("Link",Data.get(position).getLink());
-//                context.startActivity(intent);
-//            }
-//        });
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v){
+                Intent intent = new Intent(context, Page_Activity.class);
+                intent.putExtra("Name",Data.get(position).getName());
+                intent.putExtra("Link",Data.get(position).getLink());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.
             super(itemView);
 
             chapter_title = (TextView) itemView.findViewById(R.id.chapter_title);
-//            cardView = (CardView) itemView.findViewById(R.id.chapter);
+            cardView = (CardView) itemView.findViewById(R.id.chapter);
         }
     }
 

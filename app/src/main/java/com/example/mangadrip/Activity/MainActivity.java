@@ -44,25 +44,31 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                for (int k=0;k<1;k++) {
                 try {
-                    Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1").userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
-                    Elements description = doc.select("div.list-truyen-item-wrap");
-                    int length = description.size();
-                    for (int i = 0; i < length; i++) {
-                        String title = description.eq(i).select("a").attr("title");
-                        String imgUrl = description.eq(i).select("a").select("img").attr("src");
-                        String MangaLink = description.eq(i).select("a").eq(1).attr("href");
-//                        Log.d("Yuh",des);
-                        Manga test = (new Manga(title,MangaLink,imgUrl));
-                        lstManga.add(test);
+
+                        Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page="+k).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                        Elements description = doc.select("div.list-truyen-item-wrap");
+                        int length = description.size();
+                        for (int i = 0; i < length; i++) {
+                            String title = description.eq(i).select("a").attr("title");
+                            String imgUrl = description.eq(i).select("a").select("img").attr("src");
+                            int int_MangaLink = description.eq(i).select("a").eq(1).attr("abs:href").length();
+                            String MangaLink = "";
+                            for (int m = 0; m < int_MangaLink; m++) {
+                                MangaLink += description.eq(i).select("a").eq(1).attr("abs:href").charAt(m);
+                            }
+
+                            Manga test = (new Manga(title, MangaLink, imgUrl));
+                            lstManga.add(test);
+                        }
+                    } catch (IOException ignored) {
+                        Log.d("Yuh","Something is not working");
                     }
-                } catch (IOException ignored) {
-                    Log.d("Yuh","Something is not working");
-                }
-                runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});
-
-            }
-        }).start();
-    }
-
+                    runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});
+                    }
 }
+                 }).start();
+            }
+
+    }

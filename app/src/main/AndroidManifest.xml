@@ -12,15 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activity.Page_Activity"></activity>
-        <activity android:name=".Activity.Chapter_Activity" />
-        <activity android:name=".Activity.Manga_Activity" />
-        <activity android:name=".Activity.MainActivity">
+        <activity android:name=".SplashScreen"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activity.Page_Activity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Activity.Chapter_Activity" />
+        <activity android:name=".Activity.Manga_Activity"
+            android:theme="@style/NoAction_AppTheme"
+            />
+        <activity android:name=".Activity.MainActivity">
+
         </activity>
     </application>
 

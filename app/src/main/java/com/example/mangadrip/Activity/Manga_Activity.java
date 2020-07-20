@@ -1,7 +1,9 @@
 package com.example.mangadrip.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,7 @@ import java.io.IOException;
 public class Manga_Activity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     private Button button_for_chapters;
+    SwipeRefreshLayout refreshLayout;
 
     private TextView manga_title, manga_description, manga_status, manga_author;
     private ImageView img;
@@ -34,7 +37,15 @@ public class Manga_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_);
 
+        refreshLayout = findViewById(R.id.refreshLayout);
 
+//        ProgressDialog progressDialog;
+//        progressDialog = new ProgressDialog(Manga_Activity.this);
+//        progressDialog.show();
+//        progressDialog.setContentView(R.layout.progress_dialog);
+//        progressDialog.getWindow().setBackgroundDrawableResource(
+//            android.R.color.transparent
+//        );
         manga_status = (TextView) findViewById(R.id.status);
         manga_author = (TextView) findViewById(R.id.author);
         manga_title = (TextView) findViewById(R.id.depth_title);
@@ -47,10 +58,19 @@ public class Manga_Activity extends AppCompatActivity {
         String cover = intent.getExtras().getString("Thumbnail");
 
         getMangaData();
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                manga_author.setText("");
+                manga_description.setText("");
+                manga_status.setText("");
+                getMangaData();
+                refreshLayout.setRefreshing(false);
+            }
+        });
         manga_title.setText(title);
 //        manga_description.setText();
         Picasso.get().load(cover).into(img);
-
         button_for_chapters = (Button) findViewById(R.id.chapters_button);
         button_for_chapters.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +80,7 @@ public class Manga_Activity extends AppCompatActivity {
                 startActivity(intent);
         }
         });
+
     }
 
     private void getMangaData() {

@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     List<Manga> lstManga;
 
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         lstManga = new ArrayList<>();
         getWebsite();
+
 
         RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
         myAdapter = new RecyclerViewAdapter(this, lstManga);

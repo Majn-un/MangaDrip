@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,11 +29,15 @@ public class Chapter_Activity extends AppCompatActivity {
     private TextView chapter_title;
     List<Chapter> lstChapter;
     private String Manga_URL;
+    SwipeRefreshLayout refreshLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter);
+
+        refreshLayout = findViewById(R.id.refreshLayout);
 
         Intent intent = getIntent();
 
@@ -42,10 +47,20 @@ public class Chapter_Activity extends AppCompatActivity {
         lstChapter = new ArrayList<>();
         getChapters();
 
-        RecyclerView myrv = (RecyclerView) findViewById(R.id.chapter_recycler);
+        final RecyclerView myrv = (RecyclerView) findViewById(R.id.chapter_recycler);
         myAdapter = new ChapterViewAdapter(this, lstChapter);
         myrv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));;
         myrv.setAdapter(myAdapter);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getChapters();
+                myAdapter = new ChapterViewAdapter(Chapter_Activity.this, lstChapter);
+                myrv.setLayoutManager(new LinearLayoutManager(Chapter_Activity.this, LinearLayoutManager.VERTICAL, false));;
+                myrv.setAdapter(myAdapter);
+                refreshLayout.setRefreshing(false);
+            }
+        });
 
     }
 

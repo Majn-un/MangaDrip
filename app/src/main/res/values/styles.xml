@@ -22,5 +22,7 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@drawable/sang</item>
     </style>
-
+    <style name="ProgressBarStyle">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
 </resources>

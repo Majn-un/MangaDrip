@@ -16,6 +16,7 @@ import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.Classes.Page;
 import com.example.mangadrip.R;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -23,6 +24,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
@@ -60,11 +62,17 @@ public class Page_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Log.d("Chapter Link",Chapter_URL);
-                    Document doc = Jsoup.connect(Chapter_URL).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    Connection.Response res = Jsoup
+                            .connect(Chapter_URL)
+                            .method(Connection.Method.POST)
+                            .execute();
+                    Map<String, String> cookies = res.cookies();
+                    Log.d("Cookies",""+cookies);
+                    Document doc = Jsoup.connect(Chapter_URL).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                     Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {
+                        Thread.sleep(200);
                         String Link = description.eq(i).attr("src");
                         String Page_Number = String.valueOf(i+1);
                         lstPages.add(new Page(Link,Page_Number));
@@ -74,7 +82,7 @@ public class Page_Activity extends AppCompatActivity {
 
                     }
 
-                } catch (IOException ignored) {
+                } catch (IOException | InterruptedException ignored) {
                     Log.d("Yuh","Something is not working");
                 }
                 runOnUiThread(new Runnable() { public void run() { myViewPager.notifyDataSetChanged(); }});

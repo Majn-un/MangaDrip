@@ -70,6 +70,7 @@ public class Chapter_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Thread.sleep(200);
                     Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();;
                     Elements description = doc.select("div.panel-story-chapter-list").select("li");
                     int length = description.size();
@@ -98,7 +99,7 @@ public class Chapter_Activity extends AppCompatActivity {
                         }
 
                     }
-                } catch (IOException ignored) {
+                } catch (IOException | InterruptedException ignored) {
                     Log.d("Yuh","Something is not working");
                 }
 

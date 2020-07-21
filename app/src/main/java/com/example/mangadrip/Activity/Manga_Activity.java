@@ -81,6 +81,7 @@ public class Manga_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Thread.sleep(200);
                     Document doc = Jsoup.connect(Manga_URL).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                     final String author = doc.select("td.table-value").eq(1).text();
                     final String status =  doc.select("td.table-value").eq(2).text();
@@ -101,7 +102,7 @@ public class Manga_Activity extends AppCompatActivity {
 //                        tags += tag_detail.eq(i).text() + " ";
 //                    }
 
-                } catch (IOException ignored) {
+                } catch (IOException | InterruptedException ignored) {
                     Log.d("Yuh","Something is not working");
                 }
 

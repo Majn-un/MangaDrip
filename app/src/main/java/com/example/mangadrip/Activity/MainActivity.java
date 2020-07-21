@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 for (int k=0;k<1;k++) {
                     try {
-
+                        Thread.sleep(200);
                         Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page="+k).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                         Elements description = doc.select("div.list-truyen-item-wrap");
                         int length = description.size();
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                             Manga test = (new Manga(title, MangaLink, imgUrl));
                             lstManga.add(test);
                         }
-                    } catch (IOException ignored) {
+                    } catch (IOException | InterruptedException ignored) {
                         Log.d("Yuh","Something is not working");
                     }
                     runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});

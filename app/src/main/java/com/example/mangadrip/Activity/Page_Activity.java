@@ -68,6 +68,10 @@ public class Page_Activity extends AppCompatActivity {
                         String Link = description.eq(i).attr("src");
                         String Page_Number = String.valueOf(i+1);
                         lstPages.add(new Page(Link,Page_Number));
+                        if (i == 0) {
+                            Log.d("Link",Link);
+                        }
+
                     }
 
                 } catch (IOException ignored) {

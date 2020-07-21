@@ -65,11 +65,13 @@ public class Page_Activity extends AppCompatActivity {
                     Connection.Response res = Jsoup
                             .connect(Chapter_URL)
                             .method(Connection.Method.POST)
+                            .referrer("https://s8.mkklcdnv8.com/")
                             .execute();
 
                     Map<String, String> cookies = res.cookies();
+
                     Log.d("Cookies",""+cookies);
-                    Document doc = Jsoup.connect(Chapter_URL).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    Document doc = Jsoup.connect(Chapter_URL).referrer("https://s8.mkklcdnv8.com/").cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                     Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {

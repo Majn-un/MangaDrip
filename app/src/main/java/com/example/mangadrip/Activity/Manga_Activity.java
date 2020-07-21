@@ -15,11 +15,13 @@ import com.example.mangadrip.R;
 import com.example.mangadrip.Adapter.RecyclerViewAdapter;
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Map;
 
 public class Manga_Activity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
@@ -49,6 +51,8 @@ public class Manga_Activity extends AppCompatActivity {
         String title = intent.getExtras().getString("Title");
         Manga_URL = intent.getExtras().getString("URL");
         String cover = intent.getExtras().getString("Thumbnail");
+//        Map<String, String> cookie = intent.getExtras().get
+//        Log.
 
         getMangaData();
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -81,8 +85,14 @@ public class Manga_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(200);
-                    Document doc = Jsoup.connect(Manga_URL).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    Connection.Response res = Jsoup
+                            .connect(Manga_URL)
+                            .method(Connection.Method.POST)
+                            .execute();
+
+                    Map<String, String> cookies = res.cookies();
+                    Thread.sleep(1000);
+                    Document doc = Jsoup.connect(Manga_URL).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                     final String author = doc.select("td.table-value").eq(1).text();
                     final String status =  doc.select("td.table-value").eq(2).text();
                     final String description = doc.select("div.panel-story-info-description").text();

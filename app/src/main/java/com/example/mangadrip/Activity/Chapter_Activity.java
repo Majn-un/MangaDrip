@@ -17,6 +17,7 @@ import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.Classes.Manga;
 import com.example.mangadrip.R;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -24,6 +25,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Chapter_Activity extends AppCompatActivity {
     private ChapterViewAdapter myAdapter;
@@ -70,8 +72,14 @@ public class Chapter_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Connection.Response res = Jsoup
+                            .connect(getIntent().getStringExtra("URL"))
+                            .method(Connection.Method.POST)
+                            .execute();
+
+                    Map<String, String> cookies = res.cookies();
                     Thread.sleep(200);
-                    Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();;
+                    Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();;
                     Elements description = doc.select("div.panel-story-chapter-list").select("li");
                     int length = description.size();
 

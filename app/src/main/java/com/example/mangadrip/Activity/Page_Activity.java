@@ -47,12 +47,14 @@ public class Page_Activity extends AppCompatActivity {
         String Title = intent.getExtras().getString("Name");
         Chapter_URL = intent.getExtras().getString("Link");
         chapter_title.setText(Title);
-        lstPages = new ArrayList<>();
-        getMangaPages();
 
-        ViewPager myrv = (ViewPager) findViewById(R.id.view_page);
-        myViewPager = new PageViewAdapter(this,lstPages);
-        myrv.setAdapter(myViewPager);
+
+//        lstPages = new ArrayList<>();
+//        getMangaPages();
+//
+//        ViewPager myrv = (ViewPager) findViewById(R.id.view_page);
+//        myViewPager = new PageViewAdapter(this,lstPages);
+//        myrv.setAdapter(myViewPager);
 
 
     }

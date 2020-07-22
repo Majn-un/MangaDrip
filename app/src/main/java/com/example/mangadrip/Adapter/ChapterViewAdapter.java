@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.mangadrip.Activity.Page_Activity;
+import com.example.mangadrip.Activity.activity_webview;
 import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.R;
 
@@ -45,7 +46,7 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
-                Intent intent = new Intent(context, Page_Activity.class);
+                Intent intent = new Intent(context, activity_webview.class);
                 intent.putExtra("Name",Data.get(position).getName());
                 intent.putExtra("Link",Data.get(position).getLink());
                 context.startActivity(intent);

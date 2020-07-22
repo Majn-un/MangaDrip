@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         lstManga = new ArrayList<>();
         getWebsite();
 
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         myAdapter = new RecyclerViewAdapter(this, lstManga);
         myrv.setLayoutManager(new GridLayoutManager(this, 3));
         myrv.setAdapter(myAdapter);
-
 
     }
 
@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                                 .execute();
 
                         Map<String, String> cookies = res.cookies();
+                        Log.d("Cookie",""+cookies);
                         Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page="+k).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                         Elements description = doc.select("div.list-truyen-item-wrap");
                         int length = description.size();

@@ -50,13 +50,17 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Thread.sleep(1000);
                         Connection.Response res = Jsoup
-                                .connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page="+k)
+                                .connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                                 .method(Connection.Method.POST)
                                 .execute();
 
-                        Map<String, String> cookies = res.cookies();
-                        Log.d("Cookie",""+cookies);
-                        Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page="+k).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                        String cookies_cf = res.cookie("__cfduid");
+                        String cookies_session = res.cookie("ci_session");
+                        Map<String,String> cooki = res.cookies();
+                        Log.d("MainCookie",""+cooki);
+                        Thread.sleep(1000);
+
+                        Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1").cookies(cooki).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                         Elements description = doc.select("div.list-truyen-item-wrap");
                         int length = description.size();
                         for (int i = 0; i < length; i++) {
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                                 MangaLink += description.eq(i).select("a").eq(1).attr("abs:href").charAt(m);
                             }
 
-                            Manga test = (new Manga(title, MangaLink, imgUrl));
+                            Manga test = (new Manga(title, MangaLink, imgUrl, cookies_session, cookies_cf));
                             lstManga.add(test);
                         }
                     } catch (IOException | InterruptedException ignored) {

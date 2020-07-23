@@ -2,6 +2,7 @@ package com.example.mangadrip.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("Title",Data.get(position).getTitle());
                 intent.putExtra("URL",Data.get(position).getDescription());
                 intent.putExtra("Thumbnail",Data.get(position).getThumbnail());
+                intent.putExtra("Cookie ci_session", Data.get(position).getCookie1());
+                intent.putExtra("Cookie __cfduid", Data.get(position).getCookie2());
+
+//                intent.putExtra("Cookies", (Parcelable) Data.get(position).getCookies());
                 context.startActivity(intent);
             }
 

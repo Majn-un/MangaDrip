@@ -1,5 +1,7 @@
 package com.example.mangadrip.Classes;
 
+import java.util.Map;
+
 public class Page {
     private String Link;
     private String Name;
@@ -15,6 +17,7 @@ public class Page {
     public String getLink() {
         return Link;
     }
+
 
     public void setLink(String link) {
         Link = link;

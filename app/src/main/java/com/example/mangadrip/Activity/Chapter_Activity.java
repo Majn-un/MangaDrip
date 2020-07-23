@@ -24,6 +24,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ public class Chapter_Activity extends AppCompatActivity {
     List<Chapter> lstChapter;
     private String Manga_URL;
     SwipeRefreshLayout refreshLayout;
+    private String Cookie1, Cookie2;
 
 
     @Override
@@ -45,6 +47,8 @@ public class Chapter_Activity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Manga_URL = intent.getExtras().getString("Description");
+        Cookie1 = intent.getExtras().getString("Cookie ci_session");
+        Cookie2 = intent.getExtras().getString("Cookie __cfduid");
 
         chapter_title = (TextView) findViewById(R.id.chapter_title);
         lstChapter = new ArrayList<>();
@@ -72,13 +76,12 @@ public class Chapter_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Connection.Response res = Jsoup
-                            .connect(getIntent().getStringExtra("URL"))
-                            .method(Connection.Method.POST)
-                            .execute();
+                    LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
+                    cookies.put("__cfduid",Cookie2);
+                    cookies.put("ci_session",Cookie1);
 
-                    Map<String, String> cookies = res.cookies();
-                    Thread.sleep(200);
+                    Thread.sleep(1000);
+                    Log.d("ChapterCookies",""+cookies);
                     Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();;
                     Elements description = doc.select("div.panel-story-chapter-list").select("li");
                     int length = description.size();
@@ -90,7 +93,7 @@ public class Chapter_Activity extends AppCompatActivity {
                             String Link = doc.select("div.chapter-list").select("div").eq(i2).select("a").attr("href");
                             String Chapter_Title = doc.select("div.chapter-list").select("div").eq(i2).select("a").attr("title");;
                             String Date = doc.select("div.chapter-list").select("div").eq(i2).eq(2).text();
-                            Chapter chap = (new Chapter(Chapter_Title,Link));
+                            Chapter chap = (new Chapter(Chapter_Title,Link, Cookie2, Cookie1));
                             lstChapter.add(chap);
                         }
 //
@@ -101,7 +104,7 @@ public class Chapter_Activity extends AppCompatActivity {
                             String Link = description.eq(i).select("li").select("a").attr("abs:href");
                             String Chapter_Title = description.eq(i).select("li").select("a").text();
                             String Date = description.eq(1).select("li").select("span").eq(1).text();
-                            Chapter chap = (new Chapter(Chapter_Title, Link));
+                            Chapter chap = (new Chapter(Chapter_Title, Link, Cookie2, Cookie1));
                             lstChapter.add(chap);
                             //                        Log.d("chapter",Link);
                         }

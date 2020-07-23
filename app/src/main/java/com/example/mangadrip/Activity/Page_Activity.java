@@ -23,6 +23,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ public class Page_Activity extends AppCompatActivity {
     private TextView chapter_title;
     private String Chapter_URL;
     private PageViewAdapter myViewPager;
+    private String Cookie1, Cookie2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +48,17 @@ public class Page_Activity extends AppCompatActivity {
         Intent intent = getIntent();
         String Title = intent.getExtras().getString("Name");
         Chapter_URL = intent.getExtras().getString("Link");
+        Cookie1 = intent.getExtras().getString("Cookie ci_session");
+        Cookie2 = intent.getExtras().getString("Cookie __cfduid");
         chapter_title.setText(Title);
 
 
-//        lstPages = new ArrayList<>();
-//        getMangaPages();
-//
-//        ViewPager myrv = (ViewPager) findViewById(R.id.view_page);
-//        myViewPager = new PageViewAdapter(this,lstPages);
-//        myrv.setAdapter(myViewPager);
+        lstPages = new ArrayList<>();
+        getMangaPages();
+
+        ViewPager myrv = (ViewPager) findViewById(R.id.view_page);
+        myViewPager = new PageViewAdapter(this,lstPages);
+        myrv.setAdapter(myViewPager);
 
 
     }
@@ -64,16 +68,12 @@ public class Page_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Connection.Response res = Jsoup
-                            .connect(Chapter_URL)
-                            .method(Connection.Method.POST)
-                            .referrer("https://s8.mkklcdnv8.com/")
-                            .execute();
-
-                    Map<String, String> cookies = res.cookies();
-
-                    Log.d("Cookies",""+cookies);
-                    Document doc = Jsoup.connect(Chapter_URL).referrer("https://s8.mkklcdnv8.com/").cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    Thread.sleep(1000);
+                    LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
+                    cookies.put("__cfduid",Cookie1);
+                    cookies.put("ci_session",Cookie2);
+                    Log.d("Page_Cookie",""+cookies);
+                    Document doc = Jsoup.connect(Chapter_URL).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
                     Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {

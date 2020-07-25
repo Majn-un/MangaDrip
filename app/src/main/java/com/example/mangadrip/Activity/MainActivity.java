@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+
                 for (int k=0;k<1;k++) {
                     try {
                         Thread.sleep(1000);
@@ -60,7 +61,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("MainCookie",""+cooki);
                         Thread.sleep(1000);
 
-                        Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1").cookies(cooki).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                        Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
+                                .cookies(cooki)
+                                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
+                                .referrer("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
+                                .get();
                         Elements description = doc.select("div.list-truyen-item-wrap");
                         int length = description.size();
                         for (int i = 0; i < length; i++) {

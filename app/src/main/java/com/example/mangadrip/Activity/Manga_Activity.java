@@ -97,7 +97,12 @@ public class Manga_Activity extends AppCompatActivity {
                     cookies.put("ci_session",Cookie1);
                     Log.d("MangaCookies",""+cookies);
                     Thread.sleep(1000);
-                    Document doc = Jsoup.connect(Manga_URL).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    Document doc = Jsoup.connect(Manga_URL)
+                            .cookies(cookies)
+                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
+                            .referrer(Manga_URL)
+                            .get();
+
                     final String author = doc.select("td.table-value").eq(1).text();
                     final String status =  doc.select("td.table-value").eq(2).text();
                     final String description = doc.select("div.panel-story-info-description").text();

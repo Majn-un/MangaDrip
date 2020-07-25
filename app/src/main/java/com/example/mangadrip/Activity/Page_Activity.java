@@ -68,12 +68,18 @@ public class Page_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+
                     Thread.sleep(1000);
                     LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
                     cookies.put("__cfduid",Cookie1);
                     cookies.put("ci_session",Cookie2);
                     Log.d("Page_Cookie",""+cookies);
-                    Document doc = Jsoup.connect(Chapter_URL).cookies(cookies).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36").get();
+                    Log.d("Link", Chapter_URL);
+                    Document doc = Jsoup.connect(Chapter_URL)
+                            .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
+                            .cookies(cookies)
+                            .referrer(Chapter_URL)
+                            .get();
                     Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {

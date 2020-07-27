@@ -1,4 +1,3 @@
-
 package com.example.mangadrip;
 
 import androidx.appcompat.app.AppCompatActivity;

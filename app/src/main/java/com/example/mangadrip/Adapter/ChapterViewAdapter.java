@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.mangadrip.Activity.Page_Activity;
-import com.example.mangadrip.Activity.activity_webview;
 import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.R;
 

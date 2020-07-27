@@ -96,7 +96,7 @@ public class Manga_Activity extends AppCompatActivity {
                     cookies.put("__cfduid",Cookie2);
                     cookies.put("ci_session",Cookie1);
                     Log.d("MangaCookies",""+cookies);
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                     Document doc = Jsoup.connect(Manga_URL)
                             .cookies(cookies)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")

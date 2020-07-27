@@ -68,8 +68,7 @@ public class Page_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                     LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
                     cookies.put("__cfduid",Cookie1);
                     cookies.put("ci_session",Cookie2);
@@ -83,7 +82,6 @@ public class Page_Activity extends AppCompatActivity {
                     Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {
-                        Thread.sleep(200);
                         String Link = description.eq(i).attr("src");
                         String Page_Number = String.valueOf(i+1);
                         lstPages.add(new Page(Link,Page_Number));

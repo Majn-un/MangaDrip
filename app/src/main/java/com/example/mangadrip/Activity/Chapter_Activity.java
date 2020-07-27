@@ -80,7 +80,7 @@ public class Chapter_Activity extends AppCompatActivity {
                     cookies.put("__cfduid",Cookie2);
                     cookies.put("ci_session",Cookie1);
 
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                     Log.d("ChapterCookies",""+cookies);
                     Document doc = Jsoup.connect(getIntent().getStringExtra("URL"))
                             .cookies(cookies)
@@ -127,19 +127,3 @@ public class Chapter_Activity extends AppCompatActivity {
 
 }
 
-// Code for fetching Chapter info for MangaHere
-// try {
-//         Document doc = Jsoup.connect(getIntent().getStringExtra("URL")).get();
-//         Elements description = doc.select("p.title3");
-//         int length = description.size();
-//         for (int i = 0; i < length; i++) {
-//        String Link = doc.select("ul.detail-main-list").select("li").eq(i).select("a").attr("abs:href").toString();
-//        String Chapter_Title = doc.select("p.title3").eq(i).text();
-//        String Date = doc.select("p.title2").eq(i).text();
-//        Chapter chap = (new Chapter(Chapter_Title,Link));
-//        lstChapter.add(chap);
-//        }
-//        } catch (IOException ignored) {
-//        Log.d("Yuh","Something is not working");
-//        }
-//        runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});

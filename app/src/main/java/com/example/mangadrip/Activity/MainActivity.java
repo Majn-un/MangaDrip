@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
                 for (int k=0;k<1;k++) {
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                         Connection.Response res = Jsoup
                                 .connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                                 .method(Connection.Method.POST)
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         String cookies_session = res.cookie("ci_session");
                         Map<String,String> cooki = res.cookies();
                         Log.d("MainCookie",""+cooki);
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
 
                         Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                                 .cookies(cooki)

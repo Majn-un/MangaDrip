@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                             int int_MangaLink = description.eq(i).select("a").eq(1).attr("abs:href").length();
                             String MangaLink = "";
                             for (int m = 0; m < int_MangaLink; m++) {
-                                MangaLink += description.eq(i).select("a").eq(1).attr("abs:href").charAt(m);
+                                MangaLink += description.eq(i).select("a").eq(1).attr("abs:href").charAt(m);///
                             }
 
                             Manga test = (new Manga(title, MangaLink, imgUrl, cookies_session, cookies_cf));

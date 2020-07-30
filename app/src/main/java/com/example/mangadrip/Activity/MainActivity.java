@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                             lstManga.add(test);
                         }
                     } catch (IOException ignored) {
-                        Log.d("Yuh","Something is not working");
+                        Log.d("Yuh","Something is not working");////
                     }
                     runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});
                 }

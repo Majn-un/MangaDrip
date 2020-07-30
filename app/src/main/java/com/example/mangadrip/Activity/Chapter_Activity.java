@@ -80,7 +80,6 @@ public class Chapter_Activity extends AppCompatActivity {
                     cookies.put("__cfduid",Cookie2);
                     cookies.put("ci_session",Cookie1);
 
-                    Thread.sleep(5000);
                     Log.d("ChapterCookies",""+cookies);
                     Document doc = Jsoup.connect(getIntent().getStringExtra("URL"))
                             .cookies(cookies)
@@ -114,7 +113,7 @@ public class Chapter_Activity extends AppCompatActivity {
                         }
 
                     }
-                } catch (IOException | InterruptedException ignored) {
+                } catch (IOException ignored) {
                     Log.d("Yuh","Something is not working");
                 }
 

@@ -25,6 +25,9 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     List<Manga> lstManga;
+    String cookies_cf, cookies_session;
+    Map<String,String> cookie;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,23 +49,27 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    Connection.Response res = Jsoup
+                            .connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
+                            .method(Connection.Method.POST)
+                            .execute();
+
+                    cookies_cf = res.cookie("__cfduid");
+                    cookies_session = res.cookie("ci_session");
+                    cookie = res.cookies();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 for (int k=0;k<1;k++) {
                     try {
-                        Thread.sleep(5000);
-                        Connection.Response res = Jsoup
-                                .connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
-                                .method(Connection.Method.POST)
-                                .execute();
 
-                        String cookies_cf = res.cookie("__cfduid");
-                        String cookies_session = res.cookie("ci_session");
-                        Map<String,String> cooki = res.cookies();
-                        Log.d("MainCookie",""+cooki);
-                        Thread.sleep(5000);
+
+                        Log.d("MainCookie",""+cookie);
 
                         Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
-                                .cookies(cooki)
+                                .cookies(cookie)
                                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
                                 .referrer("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                                 .get();
@@ -80,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                             Manga test = (new Manga(title, MangaLink, imgUrl, cookies_session, cookies_cf));
                             lstManga.add(test);
                         }
-                    } catch (IOException | InterruptedException ignored) {
+                    } catch (IOException ignored) {
                         Log.d("Yuh","Something is not working");
                     }
                     runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});

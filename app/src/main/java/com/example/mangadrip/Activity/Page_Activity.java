@@ -68,7 +68,6 @@ public class Page_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(5000);
                     LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
                     cookies.put("__cfduid",Cookie1);
                     cookies.put("ci_session",Cookie2);
@@ -91,7 +90,7 @@ public class Page_Activity extends AppCompatActivity {
 
                     }
 
-                } catch (IOException | InterruptedException ignored) {
+                } catch (IOException ignored) {
                     Log.d("Yuh","Something is not working");
                 }
                 runOnUiThread(new Runnable() { public void run() { myViewPager.notifyDataSetChanged(); }});

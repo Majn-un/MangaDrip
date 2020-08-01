@@ -43,14 +43,12 @@ public class Page_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_viewer);
 
 
-        chapter_title = (TextView) findViewById(R.id.txt_chapter_name);
 
         Intent intent = getIntent();
         String Title = intent.getExtras().getString("Name");
         Chapter_URL = intent.getExtras().getString("Link");
         Cookie1 = intent.getExtras().getString("Cookie ci_session");
         Cookie2 = intent.getExtras().getString("Cookie __cfduid");
-        chapter_title.setText(Title);
 
 
         lstPages = new ArrayList<>();

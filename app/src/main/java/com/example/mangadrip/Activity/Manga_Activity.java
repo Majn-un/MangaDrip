@@ -28,13 +28,12 @@ public class Manga_Activity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     private Button button_for_chapters;
     SwipeRefreshLayout refreshLayout;
-
-
     private TextView manga_title, manga_description, manga_status, manga_author;
     private ImageView img;
     private String Manga_URL;
-    private String Cookie1;
-    private String Cookie2;
+    String Cookie1;
+    String Cookie2;
+    Map<String, String> cookies;
 
 
     @Override
@@ -53,10 +52,8 @@ public class Manga_Activity extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getExtras().getString("Title");
         Manga_URL = intent.getExtras().getString("URL");
-        Cookie1 = intent.getExtras().getString("Cookie ci_session");
-        Cookie2 = intent.getExtras().getString("Cookie __cfduid");
-        String cover = intent.getExtras().getString("Thumbnail");
 
+        String cover = intent.getExtras().getString("Thumbnail");
 
 
         getMangaData();
@@ -87,19 +84,26 @@ public class Manga_Activity extends AppCompatActivity {
         });
 
     }
+
     private void getMangaData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
-                    cookies.put("__cfduid",Cookie2);
-                    cookies.put("ci_session",Cookie1);
-                    Log.d("MangaCookies",""+cookies);
+                    Connection.Response res = Jsoup
+                            .connect(Manga_URL)
+                            .method(Connection.Method.POST)
+                            .execute();
+
+                    cookies = res.cookies();
+                    Cookie2 = res.cookie("__cfduid");
+                    Cookie1 = res.cookie("ci_session");
+
+                    Log.d("manga cookies",""+cookies);
                     Document doc = Jsoup.connect(Manga_URL)
-                            .cookies(cookies)
+//                            .cookies(cookies)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
-                            .referrer(Manga_URL)
+//                            .referrer(Manga_URL)
                             .get();
 
                     final String author = doc.select("td.table-value").eq(1).text();

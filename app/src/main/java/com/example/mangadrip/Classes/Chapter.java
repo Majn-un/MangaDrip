@@ -7,16 +7,27 @@ public class Chapter {
     private String Link;
     private String Cookie1;
     private String Cookie2;
-//    private Map<String, String> Cookies;
+    private String Cookie3;
+
+    //    private Map<String, String> Cookies;
     public Chapter () {
     }
 
-    public Chapter(String Chapter_Title, String Chapter_Link, String cookie1, String cookie2) {
+    public Chapter(String Chapter_Title, String Chapter_Link, String cookie1, String cookie2, String cookie3) {
         this.Name = Chapter_Title;
         this.Link = Chapter_Link;
         this.Cookie1 = cookie1;
         this.Cookie2 = cookie2;
+        this.Cookie3 = cookie3;
 
+    }
+
+    public String getCookie3() {
+        return Cookie3;
+    }
+
+    public void setCookie3(String cookie3) {
+        Cookie3 = cookie3;
     }
 
     public String getCookie1() {

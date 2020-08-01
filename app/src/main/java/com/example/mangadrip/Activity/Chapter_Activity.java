@@ -28,13 +28,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Cookie;
+
 public class Chapter_Activity extends AppCompatActivity {
     private ChapterViewAdapter myAdapter;
     private TextView chapter_title;
     List<Chapter> lstChapter;
     private String Manga_URL;
     SwipeRefreshLayout refreshLayout;
-    private String Cookie1, Cookie2;
+    String Cookie1, Cookie2, Cookie3;
 
 
     @Override
@@ -71,21 +73,30 @@ public class Chapter_Activity extends AppCompatActivity {
 
     }
 
+
     private void getChapters() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    Connection.Response res = Jsoup
+                            .connect("https://s8.mkklcdnv8.com/mangakakalot/h2/hyer5231574354229/chapter_2861/1.jpg")
+                            .method(Connection.Method.GET)
+                            .ignoreContentType(true)
+                            .execute();
+
+                    Cookie3 = res.cookie("__cfduid");
+
                     LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
                     cookies.put("__cfduid",Cookie2);
                     cookies.put("ci_session",Cookie1);
 
-                    Log.d("ChapterCookies",""+cookies);
+                    Log.d("chapter cookies",""+cookies);
                     Document doc = Jsoup.connect(getIntent().getStringExtra("URL"))
-                            .cookies(cookies)
+//                            .cookies(cookies)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
-                            .referrer(getIntent().getStringExtra("URL"))
-                            .get();;
+                            .get();
+
                     Elements description = doc.select("div.panel-story-chapter-list").select("li");
                     int length = description.size();
 
@@ -96,7 +107,7 @@ public class Chapter_Activity extends AppCompatActivity {
                             String Link = doc.select("div.chapter-list").select("div").eq(i2).select("a").attr("href");
                             String Chapter_Title = doc.select("div.chapter-list").select("div").eq(i2).select("a").attr("title");;
                             String Date = doc.select("div.chapter-list").select("div").eq(i2).eq(2).text();
-                            Chapter chap = (new Chapter(Chapter_Title,Link, Cookie2, Cookie1));
+                            Chapter chap = (new Chapter(Chapter_Title,Link,Cookie1, Cookie2, Cookie3));
                             lstChapter.add(chap);
                         }
 //
@@ -107,9 +118,8 @@ public class Chapter_Activity extends AppCompatActivity {
                             String Link = description.eq(i).select("li").select("a").attr("abs:href");
                             String Chapter_Title = description.eq(i).select("li").select("a").text();
                             String Date = description.eq(1).select("li").select("span").eq(1).text();
-                            Chapter chap = (new Chapter(Chapter_Title, Link, Cookie2, Cookie1));
+                            Chapter chap = (new Chapter(Chapter_Title, Link, Cookie1, Cookie2, Cookie3));
                             lstChapter.add(chap);
-                            //                        Log.d("chapter",Link);
                         }
 
                     }

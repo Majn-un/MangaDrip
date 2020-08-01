@@ -35,7 +35,7 @@ public class Page_Activity extends AppCompatActivity {
     private TextView chapter_title;
     private String Chapter_URL;
     private PageViewAdapter myViewPager;
-    private String Cookie1, Cookie2;
+    private String Cookie1, Cookie2, Cookie3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +43,13 @@ public class Page_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_viewer);
 
 
-        chapter_title = (TextView) findViewById(R.id.txt_chapter_name);
 
         Intent intent = getIntent();
         String Title = intent.getExtras().getString("Name");
         Chapter_URL = intent.getExtras().getString("Link");
         Cookie1 = intent.getExtras().getString("Cookie ci_session");
         Cookie2 = intent.getExtras().getString("Cookie __cfduid");
-        chapter_title.setText(Title);
+        Cookie3 = intent.getExtras().getString("Cookie3");
 
 
         lstPages = new ArrayList<>();
@@ -68,26 +67,33 @@ public class Page_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+
+                    Connection.Response res = Jsoup
+                            .connect(Chapter_URL)
+                            .method(Connection.Method.GET)
+                            .ignoreContentType(true)
+                            .execute();
+
+                    Map<String,String> CookiesForChapter = res.cookies();
+
                     LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
-                    cookies.put("__cfduid",Cookie1);
-                    cookies.put("ci_session",Cookie2);
-                    Log.d("Page_Cookie",""+cookies);
+                    cookies.put("__cfduid",Cookie2);
+                    cookies.put("ci_session",Cookie1);
+
+//                    Log.d("cookies", cookies+"");
                     Log.d("Link", Chapter_URL);
                     Document doc = Jsoup.connect(Chapter_URL)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
-                            .cookies(cookies)
+
                             .referrer(Chapter_URL)
                             .get();
                     Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {
                         String Link = description.eq(i).attr("src");
+                        Log.d("Page link",Link);
                         String Page_Number = String.valueOf(i+1);
                         lstPages.add(new Page(Link,Page_Number));
-                        if (i == 0) {
-                            Log.d("Link",Link);
-                        }
-
                     }
 
                 } catch (IOException ignored) {

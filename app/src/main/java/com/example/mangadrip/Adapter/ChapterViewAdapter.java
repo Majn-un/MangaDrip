@@ -50,6 +50,7 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.
                 intent.putExtra("Link",Data.get(position).getLink());
                 intent.putExtra("Cookie ci_session", Data.get(position).getCookie1());
                 intent.putExtra("Cookie __cfduid", Data.get(position).getCookie2());
+                intent.putExtra("Cookie3", Data.get(position).getCookie3());
                 context.startActivity(intent);
             }
         });

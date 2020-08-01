@@ -6,21 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Activity.Page_Activity">
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_chapter_name"
-            android:gravity="center_horizontal"
-            android:layout_centerHorizontal="true"
-            android:text="Chapter Name..."
-            android:textSize="18sp"/>
-    </RelativeLayout>
-    
+
+
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -22,6 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     List<Manga> lstManga;
@@ -37,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         lstManga = new ArrayList<>();
         getWebsite();
+//        OkHttpGetRequest();
 
         RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
         myAdapter = new RecyclerViewAdapter(this, lstManga);
@@ -66,13 +72,10 @@ public class MainActivity extends AppCompatActivity {
                 for (int k=0;k<1;k++) {
                     try {
 
-
-                        Log.d("MainCookie",""+cookie);
-
                         Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
-                                .cookies(cookie)
+//                                .cookies(cookie)
                                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
-                                .referrer("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
+//                                .referrer("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                                 .get();
                         Elements description = doc.select("div.list-truyen-item-wrap");
                         int length = description.size();
@@ -97,4 +100,20 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    public void OkHttpGetRequest() {
+        try {
+            OkHttpClient client = new OkHttpClient();
+
+        Request request = new Request.Builder()
+                .url("https://www.vogella.com/index.html")
+                .build();
+
+        Response response = client.newCall(request).execute();
+        Log.d("Response", "" + response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

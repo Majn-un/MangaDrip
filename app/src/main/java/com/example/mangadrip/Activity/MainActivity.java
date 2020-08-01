@@ -22,6 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     List<Manga> lstManga;
@@ -37,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         lstManga = new ArrayList<>();
         getWebsite();
+//        OkHttpGetRequest();
 
         RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
         myAdapter = new RecyclerViewAdapter(this, lstManga);
@@ -95,6 +100,30 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    public void OkHttpGetRequest() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    OkHttpClient client = new OkHttpClient();
+
+                    Request request = new Request.Builder()
+                            .url("https://www.vogella.com/index.html")
+                            .build();
+
+                    Response response = client.newCall(request).execute();
+//                    Elements description = Jsoup.parse(response).select("div.list-truyen-item-wrap");
+
+                    Log.d("Response", "" + response.body().string());
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
     }
 
 }

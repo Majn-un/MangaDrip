@@ -76,16 +76,28 @@ public class Page_Activity extends AppCompatActivity {
                             .cookies(cookies)
                             .referrer(Chapter_URL)
                             .get();
+
                     Elements description = doc.select("div.container-chapter-reader").select("img");
                     int length = description.size();
                     for (int i = 0; i < length; i++) {
                         String Link = description.eq(i).attr("src");
-                        String Page_Number = String.valueOf(i+1);
-                        lstPages.add(new Page(Link,Page_Number));
-                        if (i == 0) {
-                            Log.d("Link",Link);
+                        StringBuilder new_link= new StringBuilder();
+                        for (int m=0;m<Link.length();m++) {
+                            if (0 < m && m <= 35) {
+                                if (Link.charAt(m) == "3".charAt(0)) {
+                                    new_link.append("8");
+                                } else {
+                                    new_link.append(Link.charAt(m));
+                                }
+                            } else {
+                                new_link.append(Link.charAt(m));
+                            }
                         }
 
+                        Log.d("Link",Link);
+//                        Log.d("New link",new_link.toString());
+                        String Page_Number = String.valueOf(i+1);
+                        lstPages.add(new Page(new_link.toString(),Page_Number));
                     }
 
                 } catch (IOException ignored) {

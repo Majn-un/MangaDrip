@@ -11,9 +11,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.mangadrip.Classes.Manga;
 import com.example.mangadrip.R;
 import com.example.mangadrip.Adapter.RecyclerViewAdapter;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
+import java.util.regex.Matcher;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -24,6 +28,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class Manga_Activity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
@@ -52,26 +57,18 @@ public class Manga_Activity extends AppCompatActivity {
         img = (ImageView) findViewById(R.id.manga_thumbnail);
 
         Intent intent = getIntent();
-        String title = intent.getExtras().getString("Title");
-        Manga_URL = intent.getExtras().getString("URL");
-        String cover = intent.getExtras().getString("Thumbnail");
-
-
+        Manga_URL = Objects.requireNonNull(intent.getExtras()).getString("URL");
 
         getMangaData();
+
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                manga_author.setText("");
-                manga_description.setText("");
-                manga_status.setText("");
                 getMangaData();
                 refreshLayout.setRefreshing(false);
             }
         });
-        manga_title.setText(title);
-//        manga_description.setText();
-        Picasso.get().load(cover).into(img);
+
 
         button_for_chapters = (Button) findViewById(R.id.chapters_button);
         button_for_chapters.setOnClickListener(new View.OnClickListener() {
@@ -110,16 +107,28 @@ public class Manga_Activity extends AppCompatActivity {
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
                             .referrer(Manga_URL)
                             .get();
+                    Pattern Manganelo = Pattern.compile("//manganelo.com/");
+                    Pattern Mangakakalot = Pattern.compile("//mangakakalot.com/");
 
-                    final String author = doc.select("td.table-value").eq(1).text();
-                    final String status =  doc.select("td.table-value").eq(2).text();
-                    final String description = doc.select("div.panel-story-info-description").text();
-                    setValues(description,author,status);
-                    if (author.length() == 0) {
+                    Matcher Manganelo_Searcher = Manganelo.matcher(Manga_URL);
+                    Matcher Mangakaklot_Searcher = Mangakakalot.matcher(Manga_URL);
+
+                    if (Manganelo_Searcher.find()) {
+                        final String author = doc.select("td.table-value").eq(1).text();
+                        final String status =  doc.select("td.table-value").eq(2).text();
+                        final String description = doc.select("div.panel-story-info-description").text();
+                        final String img_URL = doc.select("span.info-image").select("img").attr("src");
+                        final String title = doc.select("div.story-info-right").select("h1").text();
+                        setValues(description,author,status,title,img_URL);
+                    } else if (Mangakaklot_Searcher.find()) {
                         final String author_2 = doc.select("ul.manga-info-text").select("li").eq(1).select("a").eq(0).text() + " " + doc.select("ul.manga-info-text").select("li").eq(1).select("a").eq(1).text();
                         final String status_2 = doc.select("ul.manga-info-text").select("li").eq(2).text();
-                        final Elements counter_description_2 = doc.select("div#noidungm").select("br");
-                        setValues("There is no description",author_2,status_2);
+                        final String description_2 = doc.select("div#noidungm").text();
+                        final String title_2 = doc.select("ul.manga-info-text").select("h1").eq(0).text();
+                        final String img_URL = doc.select("div.manga-info-pic").select("img").attr("src");
+                        setValues(description_2,author_2,status_2,title_2,img_URL);
+                    } else {
+                        Log.d("Not Found","Could not find the source");
                     }
 
                 } catch (IOException | InterruptedException ignored) {
@@ -130,12 +139,14 @@ public class Manga_Activity extends AppCompatActivity {
         }).start();
     }
 
-    private void setValues(final String description, final String author, final String status) {
+    private void setValues(final String description, final String author, final String status, final String title, final String img_URL) {
         runOnUiThread(new Runnable() {
             public void run() {
                 manga_description.setText(description);
-                manga_author.setText(author);
-                manga_status.setText(status);
+                manga_author.setText("Author: " +author);
+                manga_status.setText("Status: " +status);
+                manga_title.setText(title);
+                Picasso.get().load(img_URL).into(img);
             }
         });
     }

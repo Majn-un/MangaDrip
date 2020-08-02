@@ -114,18 +114,18 @@ public class Manga_Activity extends AppCompatActivity {
                     Matcher Mangakaklot_Searcher = Mangakakalot.matcher(Manga_URL);
 
                     if (Manganelo_Searcher.find()) {
-                        final String author = doc.select("td.table-value").eq(1).text();
-                        final String status =  doc.select("td.table-value").eq(2).text();
-                        final String description = doc.select("div.panel-story-info-description").text();
-                        final String img_URL = doc.select("span.info-image").select("img").attr("src");
-                        final String title = doc.select("div.story-info-right").select("h1").text();
+                         String author = doc.select("td.table-value").eq(1).text();
+                         String status =  doc.select("td.table-value").eq(2).text();
+                         String description = doc.select("div.panel-story-info-description").text();
+                         String img_URL = doc.select("span.info-image").select("img").attr("src");
+                         String title = doc.select("div.story-info-right").select("h1").text();
                         setValues(description,author,status,title,img_URL);
                     } else if (Mangakaklot_Searcher.find()) {
-                        final String author_2 = doc.select("ul.manga-info-text").select("li").eq(1).select("a").eq(0).text() + " " + doc.select("ul.manga-info-text").select("li").eq(1).select("a").eq(1).text();
-                        final String status_2 = doc.select("ul.manga-info-text").select("li").eq(2).text();
-                        final String description_2 = doc.select("div#noidungm").text();
-                        final String title_2 = doc.select("ul.manga-info-text").select("h1").eq(0).text();
-                        final String img_URL = doc.select("div.manga-info-pic").select("img").attr("src");
+                         String author_2 = doc.select("ul.manga-info-text").select("li").eq(1).select("a").eq(0).text() + " " + doc.select("ul.manga-info-text").select("li").eq(1).select("a").eq(1).text();
+                         String status_2 = doc.select("ul.manga-info-text").select("li").eq(2).text();
+                         String description_2 = doc.select("div#noidungm").text();
+                         String title_2 = doc.select("ul.manga-info-text").select("h1").eq(0).text();
+                         String img_URL = doc.select("div.manga-info-pic").select("img").attr("src");
                         setValues(description_2,author_2,status_2,title_2,img_URL);
                     } else {
                         Log.d("Not Found","Could not find the source");

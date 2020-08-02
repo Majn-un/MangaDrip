@@ -5,8 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.mangadrip.Classes.Manga;
 import com.example.mangadrip.R;
@@ -43,6 +48,41 @@ public class MainActivity extends AppCompatActivity {
         myrv.setLayoutManager(new GridLayoutManager(this, 3));
         myrv.setAdapter(myAdapter);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_item, menu);
+        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchViewItem.getActionView();
+        searchView.setQueryHint("Search...");
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText = newText.toLowerCase();
+                ArrayList<Manga> newList = new ArrayList<>();
+                for (Manga manga : lstManga) {
+                    String title = manga.getTitle().toLowerCase();
+                    if (title.contains(newText)) {
+                        newList.add(manga);
+                    }
+                }
+                myAdapter.setFilter(newList);
+                return true;
+            }
+        };
+
+        searchView.setOnQueryTextListener(queryTextListener);
+        return true;
     }
 
     private void getWebsite() {

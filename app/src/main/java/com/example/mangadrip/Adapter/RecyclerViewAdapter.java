@@ -3,6 +3,7 @@ package com.example.mangadrip.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.mangadrip.Classes.Manga;
 import com.example.mangadrip.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
@@ -43,15 +45,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+
         holder.manga_title.setText(Data.get(position).getTitle());
         Picasso.get().load(Data.get(position).getThumbnail()).into(holder.manga_img);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
                 Intent intent = new Intent(context, Manga_Activity.class);
-//                intent.putExtra("Title",Data.get(position).getTitle());
                 intent.putExtra("URL",Data.get(position).getDescription());
-//                intent.putExtra("Thumbnail",Data.get(position).getThumbnail());
                 context.startActivity(intent);
             }
 
@@ -77,6 +78,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             manga_img = (ImageView) itemView.findViewById(R.id.manga_cover_id);
             cardView = (CardView) itemView.findViewById(R.id.manga);
         }
+    }
+
+    public void setFilter (ArrayList<Manga> newList) {
+        Data = new ArrayList<>();
+        Data.addAll(newList);
+        notifyDataSetChanged();
     }
 
 }

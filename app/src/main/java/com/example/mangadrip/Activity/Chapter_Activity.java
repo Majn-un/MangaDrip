@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Chapter_Activity extends AppCompatActivity {
     private ChapterViewAdapter myAdapter;
@@ -46,9 +47,9 @@ public class Chapter_Activity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        Manga_URL = intent.getExtras().getString("Description");
-        Cookie1 = intent.getExtras().getString("Cookie ci_session");
-        Cookie2 = intent.getExtras().getString("Cookie __cfduid");
+        Manga_URL = intent.getExtras().getString("URL");
+        Cookie2 = intent.getExtras().getString("ci_session");
+        Cookie1 = intent.getExtras().getString("__cfduid");
 
         chapter_title = (TextView) findViewById(R.id.chapter_title);
         lstChapter = new ArrayList<>();
@@ -77,15 +78,20 @@ public class Chapter_Activity extends AppCompatActivity {
             public void run() {
                 try {
                     LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
-                    cookies.put("__cfduid",Cookie2);
-                    cookies.put("ci_session",Cookie1);
+                    cookies.put("__cfduid",Cookie1);
+                    cookies.put("ci_session",Cookie2);
 
-                    Log.d("ChapterCookies",""+cookies);
-                    Document doc = Jsoup.connect(getIntent().getStringExtra("URL"))
-                            .cookies(cookies)
+                    Log.d("cookes",cookies+"");
+
+                    Random rand = new Random();
+                    int n = rand.nextInt(2000);
+                    Thread.sleep(n);
+
+                    Document doc = Jsoup.connect(Manga_URL)
+//                            .cookies(cookies)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
-                            .referrer(getIntent().getStringExtra("URL"))
-                            .get();;
+                            .referrer(Manga_URL)
+                            .get();
                     Elements description = doc.select("div.panel-story-chapter-list").select("li");
                     int length = description.size();
 
@@ -109,11 +115,9 @@ public class Chapter_Activity extends AppCompatActivity {
                             String Date = description.eq(1).select("li").select("span").eq(1).text();
                             Chapter chap = (new Chapter(Chapter_Title, Link, Cookie2, Cookie1));
                             lstChapter.add(chap);
-                            //                        Log.d("chapter",Link);
                         }
-
                     }
-                } catch (IOException ignored) {
+                } catch (IOException | InterruptedException ignored) {
                     Log.d("Yuh","Something is not working");
                 }
 

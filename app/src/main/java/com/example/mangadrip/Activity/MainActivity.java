@@ -21,11 +21,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     List<Manga> lstManga;
-    String cookies_cf, cookies_session;
     Map<String,String> cookie;
 
 
@@ -50,25 +50,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Random rand = new Random();
+                    int n = rand.nextInt(2000);
+                    Thread.sleep(n);
+
                     Connection.Response res = Jsoup
                             .connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                             .method(Connection.Method.POST)
                             .execute();
 
-                    cookies_cf = res.cookie("__cfduid");
-                    cookies_session = res.cookie("ci_session");
                     cookie = res.cookies();
-                } catch (IOException e) {
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
 
 
                 for (int k=0;k<1;k++) {
                     try {
-
-
-                        Log.d("MainCookie",""+cookie);
-
+                        Random rand = new Random();
+                        int n = rand.nextInt(2000);
+                        Thread.sleep(n);
                         Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                                 .cookies(cookie)
                                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
@@ -85,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
                                 MangaLink += description.eq(i).select("a").eq(1).attr("abs:href").charAt(m);///
                             }
 
-                            Manga test = (new Manga(title, MangaLink, imgUrl, cookies_session, cookies_cf));
+                            Manga test = (new Manga(title, MangaLink, imgUrl));
                             lstManga.add(test);
                         }
-                    } catch (IOException ignored) {
+                    } catch (IOException | InterruptedException ignored) {
                         Log.d("Yuh","Something is not working");////
                     }
                     runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});
@@ -96,5 +97,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
     }
+
 
 }

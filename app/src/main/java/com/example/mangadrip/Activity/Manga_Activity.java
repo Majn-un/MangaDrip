@@ -23,6 +23,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class Manga_Activity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
@@ -33,8 +34,8 @@ public class Manga_Activity extends AppCompatActivity {
     private TextView manga_title, manga_description, manga_status, manga_author;
     private ImageView img;
     private String Manga_URL;
-    private String Cookie1;
-    private String Cookie2;
+    private String cookies1;
+    private String cookies2;
 
 
     @Override
@@ -53,8 +54,6 @@ public class Manga_Activity extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getExtras().getString("Title");
         Manga_URL = intent.getExtras().getString("URL");
-        Cookie1 = intent.getExtras().getString("Cookie ci_session");
-        Cookie2 = intent.getExtras().getString("Cookie __cfduid");
         String cover = intent.getExtras().getString("Thumbnail");
 
 
@@ -80,8 +79,8 @@ public class Manga_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Manga_Activity.this,Chapter_Activity.class);
                 intent.putExtra("URL",Manga_URL);
-                intent.putExtra("Cookie ci_session", Cookie1);
-                intent.putExtra("Cookie __cfduid", Cookie2);
+                intent.putExtra("__cfduid",cookies1);
+                intent.putExtra("ci_session",cookies2);
                 startActivity(intent);
             }
         });
@@ -92,10 +91,20 @@ public class Manga_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
-                    cookies.put("__cfduid",Cookie2);
-                    cookies.put("ci_session",Cookie1);
-                    Log.d("MangaCookies",""+cookies);
+                    Random rand = new Random();
+                    int n = rand.nextInt(2000);
+                    Thread.sleep(n);
+
+                    Connection.Response res = Jsoup
+                            .connect(Manga_URL)
+                            .method(Connection.Method.POST)
+                            .execute();
+
+                    cookies1 = res.cookie("__cfduid");
+                    cookies2 = res.cookie("ci_session");
+
+                    Map<String, String> cookies = res.cookies();
+                    Log.d("Manga cookies",cookies +"");
                     Document doc = Jsoup.connect(Manga_URL)
                             .cookies(cookies)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
@@ -113,7 +122,7 @@ public class Manga_Activity extends AppCompatActivity {
                         setValues("There is no description",author_2,status_2);
                     }
 
-                } catch (IOException ignored) {
+                } catch (IOException | InterruptedException ignored) {
                     Log.d("Yuh","Something is not working");
                 }
 

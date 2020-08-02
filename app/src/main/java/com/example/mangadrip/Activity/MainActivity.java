@@ -21,15 +21,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     List<Manga> lstManga;
-    String cookies_cf, cookies_session;
     Map<String,String> cookie;
 
 
@@ -41,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
         lstManga = new ArrayList<>();
         getWebsite();
-//        OkHttpGetRequest();
 
         RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
         myAdapter = new RecyclerViewAdapter(this, lstManga);
@@ -55,25 +50,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
+                    Random rand = new Random();
+                    int n = rand.nextInt(2000);
+                    Thread.sleep(n);
+
                     Connection.Response res = Jsoup
                             .connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                             .method(Connection.Method.POST)
                             .execute();
 
-                    cookies_cf = res.cookie("__cfduid");
-                    cookies_session = res.cookie("ci_session");
                     cookie = res.cookies();
-                } catch (IOException e) {
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
                 }
 
 
                 for (int k=0;k<1;k++) {
                     try {
-
-
-                        Log.d("MainCookie",""+cookie);
-
+                        Random rand = new Random();
+                        int n = rand.nextInt(2000);
+                        Thread.sleep(n);
                         Document doc = Jsoup.connect("https://mangakakalot.com/manga_list?type=topview&category=all&state=all&page=1")
                                 .cookies(cookie)
                                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
@@ -90,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
                                 MangaLink += description.eq(i).select("a").eq(1).attr("abs:href").charAt(m);///
                             }
 
-                            Manga test = (new Manga(title, MangaLink, imgUrl, cookies_session, cookies_cf));
+                            Manga test = (new Manga(title, MangaLink, imgUrl));
                             lstManga.add(test);
                         }
-                    } catch (IOException ignored) {
+                    } catch (IOException | InterruptedException ignored) {
                         Log.d("Yuh","Something is not working");////
                     }
                     runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});
@@ -102,28 +98,5 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    public void OkHttpGetRequest() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    OkHttpClient client = new OkHttpClient();
-
-                    Request request = new Request.Builder()
-                            .url("https://www.vogella.com/index.html")
-                            .build();
-
-                    Response response = client.newCall(request).execute();
-//                    Elements description = Jsoup.parse(response).select("div.list-truyen-item-wrap");
-
-                    Log.d("Response", "" + response.body().string());
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-    }
 
 }

@@ -1,8 +1,6 @@
 package com.example.mangadrip.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -11,8 +9,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.example.mangadrip.Adapter.PageViewAdapter;
-import com.example.mangadrip.Adapter.RecyclerViewAdapter;
-import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.Classes.Page;
 import com.example.mangadrip.R;
 
@@ -25,9 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+import java.util.Random;
 
 public class Page_Activity extends AppCompatActivity {
 
@@ -36,6 +30,7 @@ public class Page_Activity extends AppCompatActivity {
     private String Chapter_URL;
     private PageViewAdapter myViewPager;
     private String Cookie1, Cookie2;
+    private Document doc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +42,8 @@ public class Page_Activity extends AppCompatActivity {
         Intent intent = getIntent();
         String Title = intent.getExtras().getString("Name");
         Chapter_URL = intent.getExtras().getString("Link");
-        Cookie1 = intent.getExtras().getString("Cookie ci_session");
-        Cookie2 = intent.getExtras().getString("Cookie __cfduid");
+        Cookie1 = intent.getExtras().getString("ci_session");
+        Cookie2 = intent.getExtras().getString("__cfduid");
 
 
         lstPages = new ArrayList<>();
@@ -67,38 +62,42 @@ public class Page_Activity extends AppCompatActivity {
             public void run() {
                 try {
                     LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
-                    cookies.put("__cfduid",Cookie1);
-                    cookies.put("ci_session",Cookie2);
-                    Log.d("Page_Cookie",""+cookies);
-                    Log.d("Link", Chapter_URL);
+                    cookies.put("__cfduid",Cookie2);
+                    cookies.put("ci_session",Cookie1);
+                    Log.d("page",cookies+"");
+
                     Document doc = Jsoup.connect(Chapter_URL)
+//                            .cookies(cookies)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
-                            .cookies(cookies)
                             .referrer(Chapter_URL)
                             .get();
 
-                    Elements description = doc.select("div.container-chapter-reader").select("img");
-                    int length = description.size();
-                    for (int i = 0; i < length; i++) {
-                        String Link = description.eq(i).attr("src");
-                        StringBuilder new_link= new StringBuilder();
-                        for (int m=0;m<Link.length();m++) {
-                            if (0 < m && m <= 35) {
-                                if (Link.charAt(m) == "3".charAt(0)) {
-                                    new_link.append("8");
-                                } else {
-                                    new_link.append(Link.charAt(m));
-                                }
-                            } else {
-                                new_link.append(Link.charAt(m));
-                            }
-                        }
 
-                        Log.d("Link",Link);
-//                        Log.d("New link",new_link.toString());
-                        String Page_Number = String.valueOf(i+1);
-                        lstPages.add(new Page(new_link.toString(),Page_Number));
+                    Elements link_list = doc.select("div.container-chapter-reader").select("img");
+                    int length = link_list.size();
+                    String pattern = "\\//(.*?)\\/";
+                    if (length==0) {
+                        Elements Mangakakalot = doc.select("div.vung-doc").select("img");
+                        Log.d("Manga",Mangakakalot+"");
+                        for (int i = 0; i < Mangakakalot.size(); i++) {
+                            String image_url = Mangakakalot.eq(i).attr("src");
+                            Log.d("Mangakakalot",image_url);
+                            String reincarnatedURL = image_url.replaceAll(pattern, "//s8.mkklcdnv8.com/");
+
+                            String Page_Number = String.valueOf(i+1);
+                            lstPages.add(new Page(reincarnatedURL,Page_Number));
+                        }
+                    } else {
+                        Elements Manganelo = doc.select("div.container-chapter-reader").select("img");
+                        for (int i = 0; i < Manganelo.size(); i++) {
+                            String image_url = Manganelo.eq(i).attr("src");
+                            String reincarnatedURL = image_url.replaceAll(pattern, "//s8.mkklcdnv8.com/");
+                            Log.d("manganelo",image_url);
+                            String Page_Number = String.valueOf(i+1);
+                            lstPages.add(new Page(reincarnatedURL,Page_Number));
+                        }
                     }
+
 
                 } catch (IOException ignored) {
                     Log.d("Yuh","Something is not working");

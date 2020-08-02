@@ -45,8 +45,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
         holder.manga_title.setText(Data.get(position).getTitle());
         Picasso.get().load(Data.get(position).getThumbnail()).into(holder.manga_img);
-//        Picasso.get().setLoggingEnabled(true);
-//        holder.manga_img.setImageResource(Data.get(position).getThumbnail());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
@@ -54,10 +52,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 intent.putExtra("Title",Data.get(position).getTitle());
                 intent.putExtra("URL",Data.get(position).getDescription());
                 intent.putExtra("Thumbnail",Data.get(position).getThumbnail());
-                intent.putExtra("Cookie ci_session", Data.get(position).getCookie1());
-                intent.putExtra("Cookie __cfduid", Data.get(position).getCookie2());
-
-//                intent.putExtra("Cookies", (Parcelable) Data.get(position).getCookies());
                 context.startActivity(intent);
             }
 

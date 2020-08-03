@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class Chapter_Activity extends AppCompatActivity {
     private String Manga_URL;
     SwipeRefreshLayout refreshLayout;
     private String Cookie1, Cookie2;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -44,6 +46,11 @@ public class Chapter_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_chapter);
 
         refreshLayout = findViewById(R.id.refreshLayout);
+        progressDialog = new ProgressDialog(Chapter_Activity.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.setCancelable(false);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         Intent intent = getIntent();
 
@@ -117,6 +124,7 @@ public class Chapter_Activity extends AppCompatActivity {
                             lstChapter.add(chap);
                         }
                     }
+                    progressDialog.dismiss();
                 } catch (IOException | InterruptedException ignored) {
                     Log.d("Yuh","Something is not working");
                 }

@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+
 import androidx.appcompat.widget.SearchView;
 
 import com.example.mangadrip.Classes.Manga;
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter myAdapter;
     List<Manga> lstManga;
     Map<String,String> cookie;
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -39,6 +43,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.setCancelable(false);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         lstManga = new ArrayList<>();
         getWebsite();
@@ -132,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException | InterruptedException ignored) {
                         Log.d("Yuh","Something is not working");////
                     }
+                    progressDialog.dismiss();
                     runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});
                 }
             }

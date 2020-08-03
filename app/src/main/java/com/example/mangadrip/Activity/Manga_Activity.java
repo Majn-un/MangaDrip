@@ -3,6 +3,7 @@ package com.example.mangadrip.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.mangadrip.Classes.Manga;
 import com.example.mangadrip.R;
 import com.example.mangadrip.Adapter.RecyclerViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -22,10 +22,8 @@ import java.util.regex.Matcher;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -41,12 +39,19 @@ public class Manga_Activity extends AppCompatActivity {
     private String Manga_URL;
     private String cookies1;
     private String cookies2;
+    ProgressDialog progressDialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manga_);
+
+        progressDialog = new ProgressDialog(Manga_Activity.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.setCancelable(false);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         refreshLayout = findViewById(R.id.refreshLayout);
 
@@ -68,7 +73,6 @@ public class Manga_Activity extends AppCompatActivity {
                 refreshLayout.setRefreshing(false);
             }
         });
-
 
         button_for_chapters = (Button) findViewById(R.id.chapters_button);
         button_for_chapters.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +151,7 @@ public class Manga_Activity extends AppCompatActivity {
                 manga_status.setText("Status: " +status);
                 manga_title.setText(title);
                 Picasso.get().load(img_URL).into(img);
+                progressDialog.dismiss();
             }
         });
     }

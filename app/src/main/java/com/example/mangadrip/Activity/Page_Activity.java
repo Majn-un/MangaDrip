@@ -3,6 +3,7 @@ package com.example.mangadrip.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,12 +32,18 @@ public class Page_Activity extends AppCompatActivity {
     private PageViewAdapter myViewPager;
     private String Cookie1, Cookie2;
     private Document doc;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewer);
 
+        progressDialog = new ProgressDialog(Page_Activity.this);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.setCancelable(false);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
 
         Intent intent = getIntent();
@@ -97,6 +104,8 @@ public class Page_Activity extends AppCompatActivity {
                             lstPages.add(new Page(reincarnatedURL,Page_Number));
                         }
                     }
+
+                    progressDialog.dismiss();
 
 
                 } catch (IOException ignored) {

@@ -1,8 +1,9 @@
 package com.example.mangadrip.Classes;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Chapter {
+public class Chapter implements Serializable {
     private String Name;
     private String Link;
     private String Cookie1;

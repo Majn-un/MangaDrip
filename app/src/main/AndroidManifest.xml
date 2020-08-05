@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".Activity.Page_Activity"
-            android:theme="@style/SplashTheme"/>
+            android:theme="@style/PageView"/>
         <activity android:name=".Activity.Chapter_Activity" />
         <activity android:name=".Activity.Manga_Activity" />
         <activity android:name=".Activity.MainActivity">

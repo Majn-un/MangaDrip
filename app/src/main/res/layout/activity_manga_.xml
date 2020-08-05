@@ -28,7 +28,6 @@
                     android:id="@+id/manga_thumbnail"
                     android:layout_width="125dp"
                     android:layout_height="180dp"
-                    android:background="#2d2d2d"
                     android:scaleType="centerCrop" />
 
                 <TextView

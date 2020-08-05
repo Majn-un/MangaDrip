@@ -1,15 +1,22 @@
 package com.example.mangadrip.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.example.mangadrip.Adapter.PageViewAdapter;
+import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.Classes.Page;
 import com.example.mangadrip.R;
 
@@ -27,17 +34,26 @@ import java.util.Random;
 public class Page_Activity extends AppCompatActivity {
 
     List<Page> lstPages;
-    private TextView chapter_title;
     private String Chapter_URL;
+    private TextView chapter_title;
     private PageViewAdapter myViewPager;
     private String Cookie1, Cookie2;
     private Document doc;
+    private List<Chapter> list;
     ProgressDialog progressDialog;
+    private TextView leftBubble;
+    private TextView rightBubble;
+    private int index;
+    private ViewPager myrv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_viewer);
+
+        Button next = (Button) findViewById(R.id.button2);
+        Button previous = (Button) findViewById(R.id.button1);
 
         progressDialog = new ProgressDialog(Page_Activity.this);
         progressDialog.show();
@@ -51,15 +67,56 @@ public class Page_Activity extends AppCompatActivity {
         Chapter_URL = intent.getExtras().getString("Link");
         Cookie1 = intent.getExtras().getString("ci_session");
         Cookie2 = intent.getExtras().getString("__cfduid");
+        list = (List<Chapter>) intent.getSerializableExtra("LIST");
 
-
+        for (int i=0;i<list.size();i++) {
+            if (list.get(i).getLink().equals(Chapter_URL)) {
+                index = i;
+                break;
+            }
+        }
         lstPages = new ArrayList<>();
         getMangaPages();
 
-        ViewPager myrv = (ViewPager) findViewById(R.id.view_page);
-        myViewPager = new PageViewAdapter(this,lstPages);
+        myrv = (ViewPager) findViewById(R.id.view_page);
+        myViewPager = new PageViewAdapter(this, lstPages);
         myrv.setAdapter(myViewPager);
 
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (index == 0) {
+                    Log.d("Newest Chapter Enabled","YUH");
+                } else {
+                    Chapter_URL = list.get(index - 1).getLink();
+                    Log.d("Chapter Link Previous",Chapter_URL );
+                    index = index-1;
+                    lstPages = new ArrayList<>();
+                    getMangaPages();
+                    myViewPager = new PageViewAdapter(Page_Activity.this, lstPages);
+                    myrv.setAdapter(myViewPager);
+                }
+            }
+        });
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (index+1 == list.size()) {
+                    Log.d("Newest Chapter Enabled", "YUH");
+                } else {
+                    Chapter_URL = list.get(index + 1).getLink();
+                    index = index + 1;
+                    Log.d("Chapter Link Next", Chapter_URL);
+                    lstPages = new ArrayList<>();
+                    getMangaPages();
+                    myViewPager = new PageViewAdapter(Page_Activity.this, lstPages);
+                    myrv.setAdapter(myViewPager);
+
+
+                }
+            }
+        });
 
     }
 
@@ -71,8 +128,8 @@ public class Page_Activity extends AppCompatActivity {
                     LinkedHashMap<String, String> cookies = new LinkedHashMap<String, String>();
                     cookies.put("__cfduid",Cookie2);
                     cookies.put("ci_session",Cookie1);
-                    Log.d("page",cookies+"");
-
+//                    Log.d("page",cookies+"");
+                    Log.d("Chapter_URL",Chapter_URL);
                     Document doc = Jsoup.connect(Chapter_URL)
 //                            .cookies(cookies)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")
@@ -85,10 +142,8 @@ public class Page_Activity extends AppCompatActivity {
                     String pattern = "\\//(.*?)\\/";
                     if (length==0) {
                         Elements Mangakakalot = doc.select("div.vung-doc").select("img");
-                        Log.d("Manga",Mangakakalot+"");
                         for (int i = 0; i < Mangakakalot.size(); i++) {
                             String image_url = Mangakakalot.eq(i).attr("src");
-                            Log.d("Mangakakalot",image_url);
                             String reincarnatedURL = image_url.replaceAll(pattern, "//s8.mkklcdnv8.com/");
 
                             String Page_Number = String.valueOf(i+1);
@@ -99,7 +154,6 @@ public class Page_Activity extends AppCompatActivity {
                         for (int i = 0; i < Manganelo.size(); i++) {
                             String image_url = Manganelo.eq(i).attr("src");
                             String reincarnatedURL = image_url.replaceAll(pattern, "//s8.mkklcdnv8.com/");
-                            Log.d("manganelo",image_url);
                             String Page_Number = String.valueOf(i+1);
                             lstPages.add(new Page(reincarnatedURL,Page_Number));
                         }

@@ -2,6 +2,8 @@ package com.example.mangadrip.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.example.mangadrip.Activity.Page_Activity;
 import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.R;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.MyViewHolder> {
@@ -50,6 +53,7 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.
                 intent.putExtra("Link",Data.get(position).getLink());
                 intent.putExtra("ci_session", Data.get(position).getCookie1());
                 intent.putExtra("__cfduid", Data.get(position).getCookie2());
+                intent.putExtra("LIST",(Serializable) Data);
                 context.startActivity(intent);
             }
         });
@@ -67,7 +71,7 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
+///
             chapter_title = (TextView) itemView.findViewById(R.id.chapter_title);
             cardView = (CardView) itemView.findViewById(R.id.chapter);
         }

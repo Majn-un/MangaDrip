@@ -7,8 +7,8 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="77dp"
+        android:layout_height="74dp"
         android:background="@drawable/bg_round"
         android:gravity="center"
         android:orientation="vertical"
@@ -19,19 +19,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ProgressBar
-            android:theme="@style/ProgressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
+            android:indeterminate="false"
+            style="@style/Widget.AppCompat.ProgressBar"
             android:progressDrawable="@color/colorPrimary"
-            android:indeterminate="false"/>
+            android:theme="@style/ProgressBarStyle" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Loading..."
-            android:textSize="15sp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

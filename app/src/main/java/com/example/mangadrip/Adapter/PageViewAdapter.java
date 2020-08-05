@@ -48,8 +48,6 @@ public class PageViewAdapter extends PagerAdapter {
         View image_layout = inflater.inflate(R.layout.view_pager_item,container,false);
         PhotoView page_image = (PhotoView) image_layout.findViewById(R.id.page_image);
         Picasso.get().load(PageList.get(position).getLink()).into(page_image);
-
-
         container.addView(image_layout);
         return image_layout;
     }

@@ -67,7 +67,7 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
+///
             chapter_title = (TextView) itemView.findViewById(R.id.chapter_title);
             cardView = (CardView) itemView.findViewById(R.id.chapter);
         }

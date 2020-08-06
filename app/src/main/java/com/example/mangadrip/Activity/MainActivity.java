@@ -53,19 +53,19 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LibraryFragment()).commit();
 
 
-        progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.show();
-        progressDialog.setContentView(R.layout.progress_dialog);
-        progressDialog.setCancelable(false);
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//        progressDialog = new ProgressDialog(MainActivity.this);
+//        progressDialog.show();
+//        progressDialog.setContentView(R.layout.progress_dialog);
+//        progressDialog.setCancelable(false);
+//        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//
+//        lstManga = new ArrayList<>();
+//        getWebsite();
 
-        lstManga = new ArrayList<>();
-        getWebsite();
-
-        RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
-        myAdapter = new RecyclerViewAdapter(MainActivity.this, lstManga);
-        myrv.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
-        myrv.setAdapter(myAdapter);
+//        RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
+//        myAdapter = new RecyclerViewAdapter(MainActivity.this, lstManga);
+//        myrv.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
+//        myrv.setAdapter(myAdapter);
 
 
 

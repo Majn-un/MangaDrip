@@ -12,10 +12,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_navigation"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_id"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

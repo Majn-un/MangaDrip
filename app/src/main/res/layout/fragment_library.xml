@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="AYE"
-        android:textSize="40dp"
-        />
+        android:textSize="30dp"/>
+
 </RelativeLayout>

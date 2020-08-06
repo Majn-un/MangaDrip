@@ -1,7 +1,9 @@
 package com.example.mangadrip.Activity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,8 +19,11 @@ import android.widget.ProgressBar;
 import androidx.appcompat.widget.SearchView;
 
 import com.example.mangadrip.Classes.Manga;
+import com.example.mangadrip.Fragment.FavoriteFragment;
+import com.example.mangadrip.Fragment.LibraryFragment;
 import com.example.mangadrip.R;
 import com.example.mangadrip.Adapter.RecyclerViewAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -37,11 +42,14 @@ public class MainActivity extends AppCompatActivity {
     Map<String,String> cookie;
     ProgressDialog progressDialog;
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new LibraryFragment()).commit();
 
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.show();
@@ -53,11 +61,35 @@ public class MainActivity extends AppCompatActivity {
         getWebsite();
 
         RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
-        myAdapter = new RecyclerViewAdapter(this, lstManga);
-        myrv.setLayoutManager(new GridLayoutManager(this, 3));
+        myAdapter = new RecyclerViewAdapter(MainActivity.this, lstManga);
+        myrv.setLayoutManager(new GridLayoutManager(MainActivity.this, 3));
         myrv.setAdapter(myAdapter);
 
+
+
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+
+                    switch (item.getItemId()) {
+                        case R.id.nav_library:
+                            selectedFragment = new LibraryFragment();
+
+                            break;
+                        case R.id.nav_favorite:
+                            selectedFragment = new FavoriteFragment();
+                            break;
+
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                    return true;
+                }
+
+            };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

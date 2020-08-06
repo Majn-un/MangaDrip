@@ -145,7 +145,7 @@ public class LibraryFragment extends Fragment {
                             lstManga.add(test);
                         }
                     } catch (IOException | InterruptedException ignored) {
-                        Log.d("Yuh","Something is not working");////
+                        Log.d("Yuh","Something is not working");
                     }
                     progressDialog.dismiss();
                     getActivity().runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});

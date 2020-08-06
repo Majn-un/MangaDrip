@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mangadrip.Activity.Page_Activity;
 import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.R;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.util.List;
@@ -53,7 +55,13 @@ public class ChapterViewAdapter extends RecyclerView.Adapter<ChapterViewAdapter.
                 intent.putExtra("Link",Data.get(position).getLink());
                 intent.putExtra("ci_session", Data.get(position).getCookie1());
                 intent.putExtra("__cfduid", Data.get(position).getCookie2());
-                intent.putExtra("LIST",(Serializable) Data);
+
+                String list_string = "";
+                for (int i =0;i<Data.size();i++) {
+                    list_string += Data.get(i).getName() + " - " + Data.get(i).getLink() + " , ";
+                }
+                Log.d("list_string", list_string);
+                intent.putExtra("Chapter_List",list_string);
                 context.startActivity(intent);
             }
         });

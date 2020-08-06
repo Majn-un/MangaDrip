@@ -89,7 +89,7 @@ public class Chapter_Activity extends AppCompatActivity {
                     cookies.put("__cfduid",Cookie1);
                     cookies.put("ci_session",Cookie2);
 
-                    Log.d("MangaURL",Manga_URL+"");
+//                    Log.d("MangaURL",Manga_URL+"");
 
                     Random rand = new Random();
                     int n = rand.nextInt(2000);
@@ -110,7 +110,6 @@ public class Chapter_Activity extends AppCompatActivity {
                             String Link = doc.select("div.chapter-list").select("div").eq(i2).select("a").attr("href");
                             String Chapter_Title = doc.select("div.chapter-list").select("div").eq(i2).select("a").attr("title");;
                             String Date = doc.select("div.chapter-list").select("div").eq(i2).eq(2).text();
-                            Log.d("Link",Link);
                             Chapter chap = (new Chapter(Chapter_Title,Link, Cookie2, Cookie1));
                             lstChapter.add(chap);
                         }
@@ -122,7 +121,6 @@ public class Chapter_Activity extends AppCompatActivity {
                             String Link = description.eq(i).select("li").select("a").attr("abs:href");
                             String Chapter_Title = description.eq(i).select("li").select("a").text();
                             String Date = description.eq(1).select("li").select("span").eq(1).text();
-                            Log.d("Link",Link);
                             Chapter chap = (new Chapter(Chapter_Title, Link, Cookie2, Cookie1));
                             lstChapter.add(chap);
                         }

@@ -19,6 +19,7 @@ import com.example.mangadrip.Adapter.PageViewAdapter;
 import com.example.mangadrip.Classes.Chapter;
 import com.example.mangadrip.Classes.Page;
 import com.example.mangadrip.R;
+import com.google.gson.Gson;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -27,6 +28,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
@@ -67,10 +69,17 @@ public class Page_Activity extends AppCompatActivity {
         Chapter_URL = intent.getExtras().getString("Link");
         Cookie1 = intent.getExtras().getString("ci_session");
         Cookie2 = intent.getExtras().getString("__cfduid");
-        list = (List<Chapter>) intent.getSerializableExtra("LIST");
+        String Chapter_List = intent.getExtras().getString("Chapter_List");
+        ArrayList aList= new ArrayList(Arrays.asList(Chapter_List.split(",")));
+        String[] myStringArray;
+        final ArrayList<List<String>> bList = new ArrayList();
+        for (int i=0;i<aList.size();i++){
+            ArrayList beta = new  ArrayList(Arrays.asList(aList.get(i).toString().split("-")));
+            bList.add(beta);
+        }
 
-        for (int i=0;i<list.size();i++) {
-            if (list.get(i).getLink().equals(Chapter_URL)) {
+        for (int i = 0; i<bList.size(); i++) {
+            if (bList.get(i).get(1).equals(" "+Chapter_URL+" ")) {
                 index = i;
                 break;
             }
@@ -88,8 +97,8 @@ public class Page_Activity extends AppCompatActivity {
                 if (index == 0) {
                     Log.d("Newest Chapter Enabled","YUH");
                 } else {
-                    Chapter_URL = list.get(index - 1).getLink();
-                    Log.d("Chapter Link Previous",Chapter_URL );
+                    Chapter_URL = bList.get(index - 1).get(1);
+//                    Log.d("Chapter Link Previous",Chapter_URL );
                     index = index-1;
                     lstPages = new ArrayList<>();
                     getMangaPages();
@@ -102,12 +111,12 @@ public class Page_Activity extends AppCompatActivity {
         previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (index+1 == list.size()) {
-                    Log.d("Newest Chapter Enabled", "YUH");
+                if (index+1 == bList.size()) {
+                    Log.d("Oldest Chapter Enabled", "YUH");
                 } else {
-                    Chapter_URL = list.get(index + 1).getLink();
+                    Chapter_URL = bList.get(index + 1).get(1);
                     index = index + 1;
-                    Log.d("Chapter Link Next", Chapter_URL);
+//                    Log.d("Chapter Link Next", Chapter_URL);
                     lstPages = new ArrayList<>();
                     getMangaPages();
                     myViewPager = new PageViewAdapter(Page_Activity.this, lstPages);
@@ -129,7 +138,7 @@ public class Page_Activity extends AppCompatActivity {
                     cookies.put("__cfduid",Cookie2);
                     cookies.put("ci_session",Cookie1);
 //                    Log.d("page",cookies+"");
-                    Log.d("Chapter_URL",Chapter_URL);
+//                    Log.d("Chapter_URL",Chapter_URL);
                     Document doc = Jsoup.connect(Chapter_URL)
 //                            .cookies(cookies)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36")

@@ -91,40 +91,40 @@ public class MainActivity extends AppCompatActivity {
 
             };
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_item, menu);
-        MenuItem searchViewItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) searchViewItem.getActionView();
-        searchView.setQueryHint("Search...");
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-
-        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                newText = newText.toLowerCase();
-                ArrayList<Manga> newList = new ArrayList<>();
-                for (Manga manga : lstManga) {
-                    String title = manga.getTitle().toLowerCase();
-                    if (title.contains(newText)) {
-                        newList.add(manga);
-                    }
-                }
-                myAdapter.setFilter(newList);
-                return true;
-            }
-        };
-
-        searchView.setOnQueryTextListener(queryTextListener);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.toolbar_item, menu);
+//        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView = (SearchView) searchViewItem.getActionView();
+//        searchView.setQueryHint("Search...");
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        searchView.setIconifiedByDefault(false);
+//
+//        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                newText = newText.toLowerCase();
+//                ArrayList<Manga> newList = new ArrayList<>();
+//                for (Manga manga : lstManga) {
+//                    String title = manga.getTitle().toLowerCase();
+//                    if (title.contains(newText)) {
+//                        newList.add(manga);
+//                    }
+//                }
+//                myAdapter.setFilter(newList);
+//                return true;
+//            }
+//        };
+//
+//        searchView.setOnQueryTextListener(queryTextListener);
+//        return true;
+//    }
 
     private void getWebsite() {
         new Thread(new Runnable() {

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ public class LibraryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        setHasOptionsMenu(true);
 
         View view = inflater.inflate(R.layout.fragment_library, container, false);
         progressDialog = new ProgressDialog(getActivity());
@@ -65,7 +67,39 @@ public class LibraryFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.toolbar_item, menu);
+        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) searchViewItem.getActionView();
+        searchView.setQueryHint("Search...");
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        searchView.setIconifiedByDefault(false);
 
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText = newText.toLowerCase();
+                ArrayList<Manga> newList = new ArrayList<>();
+                for (Manga manga : lstManga) {
+                    String title = manga.getTitle().toLowerCase();
+                    if (title.contains(newText)) {
+                        newList.add(manga);
+                    }
+                }
+                myAdapter.setFilter(newList);
+                return true;
+            }
+        };
+
+        searchView.setOnQueryTextListener(queryTextListener);
+    }
     private void getWebsite() {
         new Thread(new Runnable() {
             @Override

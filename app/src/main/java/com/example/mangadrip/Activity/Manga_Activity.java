@@ -6,12 +6,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.mangadrip.DatabaseHelper;
 import com.example.mangadrip.R;
 import com.example.mangadrip.Adapter.RecyclerViewAdapter;
 import com.squareup.picasso.Picasso;
@@ -40,6 +43,9 @@ public class Manga_Activity extends AppCompatActivity {
     private String cookies1;
     private String cookies2;
     ProgressDialog progressDialog;
+    DatabaseHelper myDB;
+    private String dbMangaTitle;
+    private String dbMangaImg;
 
 
     @Override
@@ -52,6 +58,7 @@ public class Manga_Activity extends AppCompatActivity {
         progressDialog.setContentView(R.layout.progress_dialog);
         progressDialog.setCancelable(false);
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        myDB = new DatabaseHelper(this);
 
         refreshLayout = findViewById(R.id.refreshLayout);
 
@@ -86,7 +93,28 @@ public class Manga_Activity extends AppCompatActivity {
             }
         });
 
+        button_for_chapters = (Button) findViewById(R.id.favorite_button);
+        button_for_chapters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddData(Manga_URL);
+            }
+        });
+
     }
+
+    private void AddData(String manga_url) {
+        boolean insertData = myDB.addData(manga_url);
+
+        if (insertData==true) {
+            Toast.makeText(Manga_Activity.this,"Successfully Entered Data!",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(Manga_Activity.this,"Yuh it no work",Toast.LENGTH_LONG).show();
+
+        }
+
+    }
+
     private void getMangaData() {
         new Thread(new Runnable() {
             @Override
@@ -146,6 +174,8 @@ public class Manga_Activity extends AppCompatActivity {
     private void setValues(final String description, final String author, final String status, final String title, final String img_URL) {
         runOnUiThread(new Runnable() {
             public void run() {
+                dbMangaTitle = title;
+                dbMangaImg = img_URL;
                 manga_description.setText(description);
                 manga_author.setText("Author: " +author);
                 manga_status.setText("Status: " +status);

@@ -27,6 +27,9 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowBackground">@color/windowBackground</item>
     </style>
+    <style name="Main">
+        <item name="android:windowFullscreen">true</item>
+    </style>
     <style name="ProgressBarStyle">
         <item name="colorAccent">@color/colorPrimary</item>
     </style>

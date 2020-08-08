@@ -62,7 +62,8 @@ public class FavoriteFragment extends Fragment {
             while (data.moveToNext()) {
                 Manga manga = new Manga(data.getString(1), data.getString(2),data.getString(3));
                 lstManga.add(manga);
-                RecyclerView myrv = view.findViewById(R.id.recyclerview_id);
+                myDB.close();
+                RecyclerView myrv = view.findViewById(R.id.favorite_id);
                 myAdapter = new RecyclerViewAdapter(getActivity(), lstManga);
                 myrv.setLayoutManager(new GridLayoutManager(getActivity(), 3));
                 myrv.setAdapter(myAdapter);
@@ -73,37 +74,37 @@ public class FavoriteFragment extends Fragment {
         return view;
 
     }
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.toolbar_item, menu);
-        MenuItem searchViewItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) searchViewItem.getActionView();
-        searchView.setQueryHint("Search...");
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
-        searchView.setIconifiedByDefault(false);
-
-        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                newText = newText.toLowerCase();
-                ArrayList<Manga> newList = new ArrayList<>();
-                for (Manga manga : lstManga) {
-                    String title = manga.getTitle().toLowerCase();
-                    if (title.contains(newText)) {
-                        newList.add(manga);
-                    }
-                }
-                myAdapter.setFilter(newList);
-                return true;
-            }
-        };
-
-        searchView.setOnQueryTextListener(queryTextListener);
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        getActivity().getMenuInflater().inflate(R.menu.toolbar_item, menu);
+//        MenuItem searchViewItem = menu.findItem(R.id.action_search);
+//        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+//        SearchView searchView = (SearchView) searchViewItem.getActionView();
+//        searchView.setQueryHint("Search...");
+//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+//        searchView.setIconifiedByDefault(false);
+//
+//        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                newText = newText.toLowerCase();
+//                ArrayList<Manga> newList = new ArrayList<>();
+//                for (Manga manga : lstManga) {
+//                    String title = manga.getTitle().toLowerCase();
+//                    if (title.contains(newText)) {
+//                        newList.add(manga);
+//                    }
+//                }
+//                myAdapter.setFilter(newList);
+//                return true;
+//            }
+//        };
+//
+//        searchView.setOnQueryTextListener(queryTextListener);
+//    }
 }

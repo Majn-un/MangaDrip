@@ -33,11 +33,12 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class LibraryFragment extends Fragment {
     List<Manga> lstManga;
-    private RecyclerViewAdapter myAdapter;
+    private RecyclerViewAdapter LibraryAdapter;
     ProgressDialog progressDialog;
 
 
@@ -59,9 +60,9 @@ public class LibraryFragment extends Fragment {
 
 
         RecyclerView myrv = view.findViewById(R.id.recyclerview_id);
-        myAdapter = new RecyclerViewAdapter(getActivity(), lstManga);
+        LibraryAdapter = new RecyclerViewAdapter(getActivity(), lstManga);
         myrv.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        myrv.setAdapter(myAdapter);
+        myrv.setAdapter(LibraryAdapter);
         return view;
 
     }
@@ -92,7 +93,7 @@ public class LibraryFragment extends Fragment {
                         newList.add(manga);
                     }
                 }
-                myAdapter.setFilter(newList);
+                LibraryAdapter.setFilter(newList);
                 return true;
             }
         };
@@ -143,11 +144,12 @@ public class LibraryFragment extends Fragment {
                             Manga test = (new Manga(title, MangaLink, imgUrl));
                             lstManga.add(test);
                         }
+                    Log.d("lstManga", lstManga.size()+"");
                     } catch (IOException | InterruptedException ignored) {
                         Log.d("Yuh","Something is not working");
                     }
                     progressDialog.dismiss();
-                    getActivity().runOnUiThread(new Runnable() { public void run() { myAdapter.notifyDataSetChanged(); }});
+                    Objects.requireNonNull(getActivity()).runOnUiThread(new Runnable() { public void run() { LibraryAdapter.notifyDataSetChanged(); }});
                 }
             }
         }).start();

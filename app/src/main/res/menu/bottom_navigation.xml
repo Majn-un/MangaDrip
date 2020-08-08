@@ -8,4 +8,10 @@
         android:id="@+id/nav_favorite"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="Favorite"/>
+    <item
+        android:id="@+id/nav_recent"
+        android:icon="@drawable/ic_baseline_access_time_24"
+        android:title="Recent"/>
+
+
 </menu>

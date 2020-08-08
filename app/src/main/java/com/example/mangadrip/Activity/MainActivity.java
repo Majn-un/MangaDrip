@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.example.mangadrip.Fragment.FavoriteFragment;
 import com.example.mangadrip.Fragment.LibraryFragment;
+import com.example.mangadrip.Fragment.RecentFragment;
 import com.example.mangadrip.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_favorite:
                             selectedFragment = new FavoriteFragment();
                             break;
+                        case R.id.nav_recent:
+                            selectedFragment = new RecentFragment();
 
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();

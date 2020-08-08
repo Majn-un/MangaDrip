@@ -4,44 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
+
 import android.view.MenuItem;
-import android.widget.ProgressBar;
 
-import androidx.appcompat.widget.SearchView;
-
-import com.example.mangadrip.Classes.Manga;
 import com.example.mangadrip.Fragment.FavoriteFragment;
 import com.example.mangadrip.Fragment.LibraryFragment;
 import com.example.mangadrip.R;
-import com.example.mangadrip.Adapter.RecyclerViewAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerViewAdapter myAdapter;
-    List<Manga> lstManga;
-    Map<String,String> cookie;
-    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

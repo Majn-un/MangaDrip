@@ -55,14 +55,13 @@ public class LibraryFragment extends Fragment {
         progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         lstManga = new ArrayList<>();
+        getWebsite();
+
 
         RecyclerView myrv = view.findViewById(R.id.recyclerview_id);
         myAdapter = new RecyclerViewAdapter(getActivity(), lstManga);
         myrv.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         myrv.setAdapter(myAdapter);
-
-
-        getWebsite();
         return view;
 
     }

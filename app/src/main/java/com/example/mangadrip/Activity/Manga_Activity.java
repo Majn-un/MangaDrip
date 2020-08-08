@@ -70,6 +70,8 @@ public class Manga_Activity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Manga_URL = Objects.requireNonNull(intent.getExtras()).getString("URL");
+        dbMangaImg = Objects.requireNonNull(intent.getExtras()).getString("Thumbnail");
+        dbMangaTitle = Objects.requireNonNull(intent.getExtras()).getString("Name");
 
         getMangaData();
 
@@ -97,14 +99,14 @@ public class Manga_Activity extends AppCompatActivity {
         button_for_chapters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddData(Manga_URL);
+                AddData(Manga_URL, dbMangaTitle, dbMangaImg);
             }
         });
 
     }
 
-    private void AddData(String manga_url) {
-        boolean insertData = myDB.addData(manga_url);
+    private void AddData(String manga_url, String title, String thumbnail) {
+        boolean insertData = myDB.addData(manga_url, title, thumbnail);
 
         if (insertData==true) {
             Toast.makeText(Manga_Activity.this,"Successfully Entered Data!",Toast.LENGTH_LONG).show();

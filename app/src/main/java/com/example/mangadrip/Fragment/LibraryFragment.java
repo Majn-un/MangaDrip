@@ -144,7 +144,7 @@ public class LibraryFragment extends Fragment {
                             Manga test = (new Manga(title, MangaLink, imgUrl));
                             lstManga.add(test);
                         }
-                    Log.d("lstManga", lstManga.size()+"");
+                        Log.d("lstManga", lstManga.size()+"");
                     } catch (IOException | InterruptedException ignored) {
                         Log.d("Yuh","Something is not working");
                     }

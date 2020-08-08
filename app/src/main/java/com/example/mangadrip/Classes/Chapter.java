@@ -8,7 +8,7 @@ public class Chapter implements Serializable {
     private String Link;
     private String Cookie1;
     private String Cookie2;
-//    private Map<String, String> Cookies;
+    //    private Map<String, String> Cookies;
     public Chapter () {
     }
 

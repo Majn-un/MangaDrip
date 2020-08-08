@@ -154,7 +154,7 @@ public class Page_Activity extends AppCompatActivity {
                         for (int i = 0; i < Mangakakalot.size(); i++) {
                             String image_url = Mangakakalot.eq(i).attr("src");
                             String reincarnatedURL = image_url.replaceAll(pattern, "//s8.mkklcdnv8.com/");
-
+                            Log.d("LINIK",reincarnatedURL);
                             String Page_Number = String.valueOf(i+1);
                             lstPages.add(new Page(reincarnatedURL,Page_Number));
                         }
@@ -163,6 +163,8 @@ public class Page_Activity extends AppCompatActivity {
                         for (int i = 0; i < Manganelo.size(); i++) {
                             String image_url = Manganelo.eq(i).attr("src");
                             String reincarnatedURL = image_url.replaceAll(pattern, "//s8.mkklcdnv8.com/");
+                            Log.d("LInk",reincarnatedURL);
+
                             String Page_Number = String.valueOf(i+1);
                             lstPages.add(new Page(reincarnatedURL,Page_Number));
                         }

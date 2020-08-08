@@ -1,4 +1,4 @@
-package com.example.mangadrip;
+package com.example.mangadrip.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
